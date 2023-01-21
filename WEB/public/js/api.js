@@ -261,7 +261,7 @@ class Api {
     }
 
     static postComment = async(commento) => {
-        let response = await fetch('/api/project/comment', {
+        let response = await fetch('/api/document/comment', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
@@ -278,7 +278,7 @@ class Api {
     }
 
     static getComments = async() => {
-        let response = await fetch('/api/project/comment');
+        let response = await fetch('/api/document/comment');
         if(response.ok){
             let result = await response.json();
             return result;
@@ -289,7 +289,7 @@ class Api {
     }
 
     static deleteComment = async(id_commento,user) => {
-        let response = await fetch('/api/project/delete/:id_commento',{
+        let response = await fetch('/api/document/delete/:id_commento',{
             method : 'DELETE',
             headers : {
                 'Content-Type' : 'application/json'

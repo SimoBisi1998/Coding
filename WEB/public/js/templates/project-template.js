@@ -1,7 +1,7 @@
 "use strict";
 
 function createFormProject() {
-    return `
+  return `
     <button type="button" class="btn btn-primary" id="project" data-bs-toggle="modal" data-bs-target="#createProject">
     Crea Progetto
     </button>
@@ -63,7 +63,7 @@ function createNewForm() {
   <button type="button" id="logout" class="btn btn-primary">Logout</button>`;
 }
 
-function createProjectHTML(title,description,author,category,id) {
+function createProjectHTML(title, description, author, category, id) {
   return `
   <div class="box-container" id="first-container">
     <div class="registerBlock">
@@ -87,7 +87,7 @@ function createProjectHTML(title,description,author,category,id) {
   </div>`;
 }
 
-function projectPageFinanziatore(title,description,author,category,donations) {
+function projectPageFinanziatore(id_progetto,title, description, author, category, donations) {
   return `
     <div class="newbox-container">
       <div class="registerBlock">
@@ -126,7 +126,7 @@ function projectPageFinanziatore(title,description,author,category,donations) {
           <p>${category}</p>
           <hr>
         </div>
-        <button type="button" id="donation" class="btn btn-outline-info">Sostieni</button>
+        <a href="/api/project/donation/${id_progetto}"<button type="button" class="btn btn-outline-info">Sostieni</button></a>
         <button type="button" class="btn btn-outline-info">TOTALE DONATO : ${donations} €</button>
 
         <div class="dropdown">
@@ -148,22 +148,10 @@ function projectPageFinanziatore(title,description,author,category,donations) {
     </tbody>
     </table>
 
-
-    <h2>COMMENTI</h2>
-    <table id="comments-table">
-      <tr>
-        <td>
-          <form method="POST" action="" id="comment-form" class="col-6 mx-auto">
-            <input type="text" name="comment" id="comment" placeholder="Inserisci un commento...">
-            <button type="submit" id="comment-button" class="btn btn-primary">Commenta</button>
-          </form>
-        </td>
-      </tr>
-    </table>
     </footer>`;
 }
 
-function projectPage(title,description,author,category,donations) {
+function projectPage(title, description, author, category, donations) {
   return `
     <div class="newbox-container">
       <div class="registerBlock">
@@ -202,7 +190,7 @@ function projectPage(title,description,author,category,donations) {
           <p>${category}</p>
           <hr>
         </div>
-        <button type="button" class="btn btn-outline-info">TOTALE DONATO : ${donations} €</button>
+        <button type="button" id="total-donations" class="btn btn-outline-info">TOTALE DONATO : ${donations} €</button>
         <div class="dropdown">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
           Donatori
@@ -223,12 +211,6 @@ function projectPage(title,description,author,category,donations) {
         </tbody>
     </table>
 
-    <h2>COMMENTI</h2>
-    <table class="table">
-        <tbody id="comments-table">
-        </tbody>
-    </table>
-
     </footer>`;
 }
 
@@ -237,7 +219,7 @@ function createListOfDonator(user) {
   return `<li><a class="dropdown-item">${user}</a></li>`;
 }
 
-function createListOfDocuments(id_documento,titolo,descrizione,data,costo,symbolo,shop,basket,heart) {  
+function createListOfDocuments(id_documento, titolo, descrizione, data, costo, symbolo, shop, basket, heart) {
   return `
   <tr>
     <td>
@@ -252,7 +234,7 @@ function createListOfDocuments(id_documento,titolo,descrizione,data,costo,symbol
   </tr>`;
 }
 
-function createListOfDocumentsBought(id_documento,titolo,descrizione,data,costo,symbolo,shop,basket) {  
+function createListOfDocumentsBought(id_documento, titolo, descrizione, data, costo, symbolo, shop, basket) {
   return `
   <tr>
     <td>
@@ -268,7 +250,7 @@ function createListOfDocumentsBought(id_documento,titolo,descrizione,data,costo,
   </tr>`;
 }
 
-function documentPage() {
+function documentPage(form) {
   return `
   <table class="table table-striped-columns">
   <thead>
@@ -282,15 +264,29 @@ function documentPage() {
         </tbody>
   
         </table>
-
-    <table class="table table-striped-columns">
-        <tbody id="comments-table-page">
-        </tbody>
-    </table>
+  <footer>
+        <h2>COMMENTI</h2>
+        <table id="comments-table">
+          <tr>
+            <td>
+              ${form}
+            </td>
+          </tr>
+        </table>
+  </footer>
   `;
 }
 
-function createListOfDocumentsPage(titolo,descrizione,data) {  
+function commentForm() {
+  return `
+  <form method="POST" action="" id="comment-form" class="col-6 mx-auto">
+    <input type="text" name="comment" id="comment" placeholder="Inserisci un commento...">
+    <button type="submit" id="comment-button" class="btn btn-primary">Commenta</button>
+  </form>
+  `;
+}
+
+function createListOfDocumentsPage(titolo, descrizione, data) {
   return `
   <tr>
     <td><a scope="row">${titolo}</a></td>
@@ -322,7 +318,7 @@ function buyedDoc() {
   <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
   </svg>`;
 }
-function createListOfComment(commento,user) {
+function createListOfComment(commento, user) {
   return `
   <tr>
     <td>
@@ -332,16 +328,17 @@ function createListOfComment(commento,user) {
   </tr>`;
 }
 
-function deleteCommentButton(id_commento,commento) {
+function deleteCommentButton(id_commento, commento) {
   return `
   <tr>
     <td>
       <a>${commento}</a>
-      <a href="/api/project/delete/${id_commento}">
+      <a href="/api/document/delete/${id_commento}">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
       </svg></a>
+      
     </td>
   </tr>`;
 }
@@ -354,7 +351,7 @@ function deleteDocumentButton(id_documento) {
   </svg>`;
 }
 
-function createFollowProjectTemplate(title,description,author,category,id) {
+function createFollowProjectTemplate(title, description, author, category, id) {
   return `
   <div class="box-container" id="first-container">
     <div class="registerBlock">
@@ -381,7 +378,7 @@ function createFollowProjectTemplate(title,description,author,category,id) {
   </div>`;
 }
 
-function createImportInput () {
+function createImportInput() {
   return `
   <input type="text" id="form-cost" min="1" max="1000" name="importo" class="form-control" required />
   <span><label for="text">€</label></span>`;
@@ -508,6 +505,8 @@ function addModifyButton() {
     <button type="button" id="logout" class="btn btn-primary">Logout</button>`;
 }
 
-export {createFormProject,createNewForm,createProjectHTML,projectPage,projectPageFinanziatore,createFollowProjectTemplate,
-  addModifyButton,createListOfDonator,createListOfComment,deleteCommentButton,createListOfDocuments,createImportInput,createExitForm,createCarrello,
-  buyedDoc,createListOfDocumentsBought,deleteDocumentButton,HTMLfollowDocument,followedDoc,documentPage,createListOfDocumentsPage};
+export {
+  createFormProject, createNewForm, createProjectHTML, projectPage, projectPageFinanziatore, createFollowProjectTemplate,
+  addModifyButton, createListOfDonator, createListOfComment, deleteCommentButton, createListOfDocuments, createImportInput, createExitForm, createCarrello,
+  buyedDoc, createListOfDocumentsBought, deleteDocumentButton, HTMLfollowDocument, followedDoc, documentPage, createListOfDocumentsPage,commentForm
+};

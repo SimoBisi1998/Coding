@@ -17,7 +17,7 @@ import Payment from './payment.js';
 import Comment from './comment.js';
 import { createFormProject, createNewForm,createProjectHTML,projectPage,projectPageFinanziatore,createFollowProjectTemplate,addModifyButton,
 createListOfDonator,createListOfComment,deleteCommentButton ,createListOfDocuments,createExitForm, createCarrello, buyedDoc,createListOfDocumentsBought,
-deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage} from './templates/project-template.js';
+deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm} from './templates/project-template.js';
 import page from '//unpkg.com/page/page.mjs';
 import {createRegisterForm,createLoginForm,createLogoutForm,createSideNav} from './templates/login-template.js';
 import {createAlert} from './templates/alert-template.js';
@@ -153,14 +153,8 @@ class App {
                     })
 
                 }else{
-                    document.getElementById('donation').addEventListener('click',async() => {
-                        this.appContainer.innerHTML = '';
-                        this.appContainer.innerHTML = createDonationMethod();
-                        this.projectDonation(idProject);
-                    })
-                    document.getElementById('comment-button').addEventListener('click',async (event) => {
-                        this.onCommentButtonSubmitted(event,idProject);
-                    });
+                    /*document.getElementById('donation').addEventListener('click',async() => {
+                    })*/
                     document.getElementById('my-account').addEventListener('click',() => {
                         page('/info');
                     })
@@ -179,7 +173,7 @@ class App {
             await this.removeFollowProject(req.params.id);
         })
 
-        page('/api/project/delete/:id_commento',(req) => {
+        page('/api/document/delete/:id_commento',(req) => {
             this.removeComment(req.params.id_commento,this.user);
         })
 
@@ -198,20 +192,56 @@ class App {
         })
 
         page('/api/document/:id_documento',(req) => {
+            this.appContainer.innerHTML = '';
             this.showDocumentPage(req.params.id_documento);
         })
 
+        page('/api/project/donation/:id_progetto',(req) => {
+            alert("dentro");
+            this.appContainer.innerHTML = '';
+            this.appContainer.innerHTML = createDonationMethod();
+            this.projectDonation(req.params.id_progetto);
+        })
         page();
     }
 
     showDocumentPage = async(docID) =>{
-       this.appContainer.innerHTML = documentPage();
-       let doc_info = await Api.getDocuments();
-       for(let doc of doc_info) {
+        let form = commentForm();
+        let role = await this.verifyUser(this.user);
+        if(role == true) {
+            form="";
+            this.appContainer.innerHTML = documentPage(form);
+        }
+        
+        this.appContainer.innerHTML = documentPage(form);
+
+        //GET dei commenti per quel progetto proj.id
+        let comment = await Api.getComments();
+        let doc_info = await Api.getDocuments();
+        for(let doc of doc_info) {
             if(doc.id_documento == docID) {
                 document.getElementById('documents-table-page').innerHTML = createListOfDocumentsPage(doc.titolo,doc.descrizione,doc.data);
             }
-       }
+        }
+
+
+        document.getElementById('comment-button').addEventListener('click',async (event) => {
+            this.onCommentButtonSubmitted(event,docID);
+        });
+        
+        //Commenti
+        comment.forEach((commento) => {
+            if(commento.id_documento == docID && commento.id_user == this.user) {
+                const commentsTable = document.querySelector('#comments-table');
+                const com = deleteCommentButton(commento.id_commento, commento.testo)
+                commentsTable.insertAdjacentHTML('beforeend', com);
+            }
+            else if(commento.id_user != this.user && commento.id_documento == docID) {
+                const commentsTable = document.querySelector('#comments-table');
+                const com = createListOfComment(commento.testo, commento.id_user)
+                commentsTable.insertAdjacentHTML('beforeend', com);
+            }
+        })
     }
 
     followDocument = async(docID,user) => {
@@ -427,12 +457,13 @@ class App {
         }
     }
 
-    onCommentButtonSubmitted = async(event,idProject) => {
+    onCommentButtonSubmitted = async(event,docID) => {
+        alert("bella");
         event.preventDefault();
         const commentForm = document.getElementById('comment-form');
         const alertMessage = document.getElementById('alert-message');
         try {
-            let comment = new Comment(this.user,idProject,commentForm.comment.value);
+            let comment = new Comment(this.user,docID,commentForm.comment.value);
             let idComment = await Api.postComment(comment);
             alertMessage.innerHTML = createAlert('success','Commento postato con successo!');
             setTimeout(() => {
@@ -475,7 +506,8 @@ class App {
                 }
             })
         });
-        document.getElementById('donation-form').addEventListener('submit',async(event) => {
+        document.getElementById('register-button').addEventListener('click',async(event) => {
+            //GET delle donazioni totali sul progetto proj.id
             event.preventDefault();
             const donationForm = document.getElementById('donation-form');
             const alertMessage = document.getElementById('alert-message');
@@ -485,7 +517,6 @@ class App {
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
-                //history.back();
                 await this.showOneProject(idProject);
             }catch(error) {
                 alertMessage.innerHTML = createAlert('danger','Donazione non avvenuta!');
@@ -593,9 +624,6 @@ class App {
          //GET delle donazioni totali sul progetto proj.id
          let sum = await Api.getDonations();
 
-         //GET dei commenti per quel progetto proj.id
-         let comment = await Api.getComments();
-
          //GET dei documenti acquistati
          let payment = await Api.getPayment();
 
@@ -625,7 +653,7 @@ class App {
                 if(ruolo || ruolo===undefined) {
                     this.appContainer.innerHTML = projectPage(proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,arrayUser);
                 }else if(ruolo===false){
-                    this.appContainer.innerHTML = projectPageFinanziatore(proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,arrayUser);    
+                    this.appContainer.innerHTML = projectPageFinanziatore(proj.id,proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,arrayUser);    
                 }
                 //per ogni utente nell'array, creo una nuova tupla <li> nella funzione createListDonator,andando a riempire la lista dei donatori 
                 arrayUser.forEach((user) => {
@@ -694,21 +722,6 @@ class App {
                             }   
                         })
                 }
-                
-
-                //Commenti
-                comment.forEach((commento) => {
-                    if(commento.id_progetto == id && commento.id_user == this.user) {
-                        const commentsTable = document.querySelector('#comments-table');
-                        const com = deleteCommentButton(commento.id_commento, commento.testo)
-                        commentsTable.insertAdjacentHTML('beforeend', com);
-                    }
-                    else if(commento.id_user != this.user && commento.id_progetto == id) {
-                        const commentsTable = document.querySelector('#comments-table');
-                        const com = createListOfComment(commento.testo, commento.id_user)
-                        commentsTable.insertAdjacentHTML('beforeend', com);
-                    }
-                })
                 
             }
         }

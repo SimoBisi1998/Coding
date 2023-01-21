@@ -215,14 +215,14 @@ app.post('/api/project/donation',[
 })
 
 
-app.post('/api/project/comment',(req,res) => {
-  projectDb.postComment(req.body.commento)
+app.post('/api/document/comment',(req,res) => {
+  documentDb.postComment(req.body.commento)
   .then((id) => res.status(201).json(id))
   .catch(() => res.status(503).end())
 })
 
-app.get('/api/project/comment',(req,res) => {
-  projectDb.getComments()
+app.get('/api/document/comment',(req,res) => {
+  documentDb.getComments()
   .then((comments) => res.send(comments))
   .catch(() => res.status(503).json({msg : "Not get comments"}).end())
 })
@@ -239,8 +239,8 @@ app.get('/api/project/documents',(req,res) => {
   .catch(() => res.status(503).json({msg : "Error during get documents."}));
 })
 
-app.delete('/api/project/delete/:id_commento',(req,res) => {
-  projectDb.deleteComment(req.body.id_commento,req.body.user)
+app.delete('/api/document/delete/:id_commento',(req,res) => {
+  documentDb.deleteComment(req.body.id_commento,req.body.user)
   .then(() => res.status(201).json({msg : "Comment removed."}).end())
   .catch(() => res.status(503).json({msg : "Error during the delete of comment."}));
 })

@@ -2,9 +2,9 @@
 
 class comment {
 
-    constructor(user,project,text) {
+    constructor(user,id_documento,text) {
         this.user = user;
-        this.project = project;
+        this.id_documento = id_documento;
         this.text = text;
     }
 }

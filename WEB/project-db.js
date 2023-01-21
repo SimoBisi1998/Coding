@@ -121,33 +121,3 @@ exports.getDonations = async() => {
         })
     })
 }
-
-exports.postComment = async(commento) => {
-    return new Promise((resolve,reject) => {
-        const sql = 'INSERT INTO commento(id_user,id_progetto,testo) VALUES (?,?,?)';
-        db.run(sql,[commento.user,commento.project,commento.text],function (err) {
-            if(err) reject(err);
-            resolve(this.lastID);
-        })
-    })
-}
-
-exports.getComments = async() => {
-    return new Promise((resolve,reject) => {
-        const sql = 'SELECT * FROM commento';
-        db.all(sql,(err,rows) => {
-            if(err) reject(err);
-            resolve(rows);
-        })
-    })
-}
-
-exports.deleteComment = async(id_commento,user) => {
-    return new Promise((resolve,reject) => {
-        const sql = 'DELETE FROM commento WHERE id_user=? AND id_commento=?';
-        db.run(sql,[user,id_commento],(err) => {
-            if(err) reject(err);
-            resolve();
-        })
-    })
-}
