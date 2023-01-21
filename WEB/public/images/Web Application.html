@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://localhost:3000/projects# -->
+<html lang="it"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Web Application</title>
+        <link href="./Web Application_files/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="./Web Application_files/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+        <script src="./Web Application_files/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="./Web Application_files/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+        <!-- Custom css-->
+        <link rel="stylesheet" href="./Web Application_files/custom.css">
+        
+        <!-- JS import module-->
+        <script defer="" type="module" src="./Web Application_files/main.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light navbar-dark bg-dark">
+            <div class="container-fluid">
+                <img id="logo" src="./Web Application_files/logo.png">
+                <a class="navbar-brand" href="http://localhost:3000/projects#">CrowdFunding</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="http://localhost:3000/projects#">Raccogli</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="http://localhost:3000/projects#" id="investi">Investi</a>
+                        </li>
+                        <li class="nav-item" id="create-project">
+
+                        </li>
+                    </ul>
+                </div>
+                <div id="set-invisible">
+      <button type="button" id="project" class="btn btn-success">Crea Progetto</button>
+      <button type="button" id="my-account" class="btn btn-outline-info">Il mio account</button>
+      <button type="button" id="logout" class="btn btn-primary">Logout</button></div>
+            </div>
+          </nav>
+
+        <!-- alert message-->
+        <div id="alert-message"></div>
+          
+        <!-- search form-->
+        <div class="search" id="search-bar">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Cerca.." aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Ricerca</button>
+            </form>
+            <hr id="new-hr">
+            <div class="input-group">
+                <div class="input-group-text form-category">
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Tecnologia
+                    <input class="form-check-input mt-0 dim" type="radio" value="Ambiente" aria-label="Radio button for following text input">Ambiente
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Casa
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Istituti
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Scuole
+                </div>
+            </div>  
+        </div>
+
+        
+        <div class="box-container" id="first-container">
+            <div class="registerBlock">
+                <div class="block1">
+                </div>
+
+                <div class="block2">
+                    <button id="bottone" type="button">Accedi</button>
+                </div>
+            </div>
+
+            <div class="registerBlock">
+                <div class="block1">
+                </div>
+                <div class="block2">
+                    <button id="bottone" type="button">Accedi</button>
+                </div>
+            </div>
+
+            <div class="registerBlock">
+                <div class="block1">
+                </div>
+                <div class="block2">
+                    <button id="bottone" type="button">Accedi</button>
+                </div>
+            </div>
+        </div>
+    
+</body></html>

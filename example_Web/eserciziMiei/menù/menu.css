@@ -1,0 +1,68 @@
+body {
+    background-image: url("img/caffè.webp");
+    background-attachment: fixed;
+}
+
+
+.container {
+    background-color: burlywood;
+    width: 800px;
+    height: 1300px;
+    margin-left:auto;
+    margin-right: auto;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+
+.block1 h1,hr{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color:black;
+    font-size: 50px;
+}
+
+hr {
+    width: 700px;
+    border: solid;
+    border-color: brown;
+}
+
+img {
+    display: block;
+    margin: auto;
+    width: 80px;
+}
+
+.block2 .cibo{
+    font-size: 30px;
+    text-align: left;
+    margin-left: 10px;
+    color:aliceblue;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.block2 .prezzi {
+    color: aliceblue;
+    font-size: 30px;
+    text-align: right;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+p {
+    display: inline-block;
+    width: 385px;
+}
+
+
+footer {
+    font-size: 30px;
+    text-align: center;
+}
+
+#firma {
+    font-size: large;
+    font-family: 'Courier New', Courier, monospace;
+}

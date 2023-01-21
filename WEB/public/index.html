@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Web Application</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+        
+        <!-- Custom css-->
+        <link rel="stylesheet" href="custom.css">
+        
+        <!-- JS import module-->
+        <script defer type="module" src="./js/main.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light navbar-dark bg-dark">
+            <div class="container-fluid">
+                <img id="logo" src="images/logo.png">
+                <a class="navbar-brand" href="#">CrowdFunding</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page">Raccogli</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="investi">Investi</a>
+                        </li>
+                        <li class="nav-item" id="create-project">
+
+                        </li>
+                    </ul>
+                </div>
+                <div id="set-invisible">
+                    <button type="submit" class="btn btn-outline-primary login" id="login">Login</button>
+                    <button type="submit" class="btn btn-outline-success signup" id="signup">Registrati</button>
+                </div>
+            </div>
+          </nav>
+
+        <!-- alert message-->
+        <div id="alert-message"></div>
+          
+        <!-- search form-->
+        <div class="search" id="search-bar">
+            <form class="d-flex" id="search-form" role="search">
+                <input class="form-control me-2" id="form-value" type="search" placeholder="Cerca.." aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Ricerca</button>
+            </form>
+            <hr id="new-hr">
+            <div class="input-group">
+                <div class="input-group-text form-category">
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Tecnologia
+                    <input class="form-check-input mt-0 dim" type="radio" value="Ambiente" aria-label="Radio button for following text input">Ambiente
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Casa
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Istituti
+                    <input class="form-check-input mt-0 dim" type="radio" value="Tecnologia" aria-label="Radio button for following text input">Scuole
+                </div>
+            </div>  
+        </div>
+
+        
+        <div class="box-container" id="first-container">
+            <div class="registerBlock">
+                <div class="block1">
+                </div>
+
+                <div class="block2">
+                    <button id="bottone" type="button">Accedi</button>
+                </div>
+            </div>
+
+            <div class="registerBlock">
+                <div class="block1">
+                </div>
+                <div class="block2">
+                    <button id="bottone" type="button">Accedi</button>
+                </div>
+            </div>
+
+            <div class="registerBlock">
+                <div class="block1">
+                </div>
+                <div class="block2">
+                    <button id="bottone" type="button">Accedi</button>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

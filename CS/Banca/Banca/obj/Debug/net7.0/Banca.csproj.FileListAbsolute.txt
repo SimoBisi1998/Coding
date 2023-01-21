@@ -1,0 +1,15 @@
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.csproj.AssemblyReference.cache
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.GeneratedMSBuildEditorConfig.editorconfig
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.AssemblyInfoInputs.cache
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.AssemblyInfo.cs
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.csproj.CoreCompileInputs.cache
+/Users/simobisi/Desktop/CS/Banca/Banca/bin/Debug/net7.0/Banca
+/Users/simobisi/Desktop/CS/Banca/Banca/bin/Debug/net7.0/Banca.deps.json
+/Users/simobisi/Desktop/CS/Banca/Banca/bin/Debug/net7.0/Banca.runtimeconfig.json
+/Users/simobisi/Desktop/CS/Banca/Banca/bin/Debug/net7.0/Banca.dll
+/Users/simobisi/Desktop/CS/Banca/Banca/bin/Debug/net7.0/Banca.pdb
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.dll
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/refint/Banca.dll
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.pdb
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/Banca.genruntimeconfig.cache
+/Users/simobisi/Desktop/CS/Banca/Banca/obj/Debug/net7.0/ref/Banca.dll
