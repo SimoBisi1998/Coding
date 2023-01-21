@@ -287,6 +287,12 @@ app.delete('/document/remove/follow',(req,res) => {
   .catch(() => res.status(503).json({msg : "Error during delete the saveddocument"}))
 })
 
+app.put('/api/document/comment/update',(req,res) => {
+  documentDb.updateComment(req.body.commento,req.body.id_commento)
+  .then(() => res.status(201).end())
+  .catch(() => res.status(503).json({msg : "Error during modify comment"}))
+})
+
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, 'public/index.html'));
 });

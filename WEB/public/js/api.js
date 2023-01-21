@@ -420,5 +420,23 @@ class Api {
             return;
         }
     }
+
+    static updateComment = async(commento,id_commento) => {
+        let response = await fetch('/api/document/comment/update', {
+            method : 'PUT',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({commento,id_commento})
+        });
+        if(response.ok) {
+            return;
+        }
+        else {
+            let res = await response.json();
+            throw res;
+        }
+    }
+
 }
 export default Api;

@@ -17,7 +17,7 @@ import Payment from './payment.js';
 import Comment from './comment.js';
 import { createFormProject, createNewForm,createProjectHTML,projectPage,projectPageFinanziatore,createFollowProjectTemplate,addModifyButton,
 createListOfDonator,createListOfComment,deleteCommentButton ,createListOfDocuments,createExitForm, createCarrello, buyedDoc,createListOfDocumentsBought,
-deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm} from './templates/project-template.js';
+deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm,commentFormNew} from './templates/project-template.js';
 import page from '//unpkg.com/page/page.mjs';
 import {createRegisterForm,createLoginForm,createLogoutForm,createSideNav} from './templates/login-template.js';
 import {createAlert} from './templates/alert-template.js';
@@ -202,7 +202,46 @@ class App {
             this.appContainer.innerHTML = createDonationMethod();
             this.projectDonation(req.params.id_progetto);
         })
+
+        page('/api/document/modify/comment/:id_commento',(req)  => {
+            this.modifyComment(req.params.id_commento);
+        })
+
+
         page();
+    }
+
+    modifyComment = async(id_commento) => {
+
+        document.getElementById('modify-comment').remove();
+        document.getElementById('new-form-comment').innerHTML = commentFormNew();
+        let comment = "";
+        let comments = await Api.getComments();
+        
+        
+        document.getElementById('comment-button-new').addEventListener('click',async (event) => {
+            event.preventDefault();
+            const commentForm = document.getElementById('comment-form-new');
+            const alertMessage = document.getElementById('alert-message');
+            try {
+                for(let com of comments) {
+                    if(com.id_commento == id_commento) {
+                        await Api.updateComment(commentForm.comment.value,com.id_commento);
+                    }
+                }
+                alertMessage.innerHTML = createAlert('success','Commento postato con successo!');
+                setTimeout(() => {
+                    alertMessage.innerHTML = '';
+                },3000);
+                commentForm.reset();
+                history.back();
+            }catch(error) {
+                alertMessage.innerHTML = createAlert('danger','Commento non postato.');
+                setTimeout(() => {
+                    alertMessage.innerHTML = '';
+                },3000);
+            }
+        })
     }
 
     showDocumentPage = async(docID) =>{

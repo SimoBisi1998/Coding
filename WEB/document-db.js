@@ -125,3 +125,13 @@ exports.deleteComment = async(id_commento,user) => {
         })
     })
 }
+
+exports.updateComment = async(commento,id_commento) => {
+    return new Promise((resolve,reject) => {
+        const sql = "UPDATE commento SET testo = ? WHERE id_commento = ?";
+        db.run(sql,[commento,id_commento],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
