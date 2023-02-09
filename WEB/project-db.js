@@ -1,11 +1,12 @@
 "use strict";
 
 const db = require('./db.js');
+const documentDb = require('./document-db.js');
 
 exports.createProject = function(project) {
     return new Promise((resolve,reject) => {
-        const sql = 'INSERT or REPLACE INTO progetto(id_user,titolo,descrizione,autore,categoria) VALUES (?, ?, ?, ?, ?)';
-        db.run(sql,[project.id_user,project.titolo,project.descrizione,project.autore,project.categoria],function (err) {
+        const sql = 'INSERT or REPLACE INTO progetto(id_user,titolo,descrizione,autore,categoria,immagine) VALUES (?, ?, ?, ?, ?,?)';
+        db.run(sql,[project.id_user,project.titolo,project.descrizione,project.autore,project.categoria,project.image],function (err) {
             if(err)reject(err);
             resolve(this.lastID);
         })
@@ -71,12 +72,14 @@ exports.removeFollowProject = (idProject) => {
 
 
 exports.modifyProject = (project,idProject) => {
+    console.log(project.immagine)
     return new Promise((resolve,reject) => {
-        const sql = 'UPDATE progetto SET titolo=?,descrizione=?,autore=?,categoria=? WHERE id=?';
-        db.run(sql,[project.titolo,project.descrizione,project.autore,project.categoria,idProject],(err) => {
+        const sql = 'UPDATE progetto SET titolo=?,descrizione=?,autore=?,categoria=?,src=? WHERE id=?';
+        db.run(sql,[project.titolo,project.descrizione,project.autore,project.categoria,project.immagine,idProject],(err) => {
             if(err) reject(err);
+            resolve();
         })
-        resolve();
+        
     })
 }
 
@@ -89,6 +92,7 @@ exports.deleteProject = async(idProject) => {
         })
     }).then(() => {
         this.deleteAllDocuments(idProject);
+        this.deleteAllComments(idProject)
     }).catch();
 }
 
@@ -118,6 +122,16 @@ exports.getDonations = async() => {
         db.all(sql,(err,rows) => {
             if(err) reject(err);
             resolve(rows);
+        })
+    })
+}
+
+exports.deleteAllComments = async (idProject) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM commento WHERE id_progetto=?";
+        db.run(sql,[idProject],(err) => {
+            if(err) reject(err)
+            resolve();
         })
     })
 }

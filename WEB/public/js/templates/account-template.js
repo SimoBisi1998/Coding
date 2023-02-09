@@ -2,23 +2,26 @@
 
 function showAccount(nome,cognome,email,ruolo) {
     return `
-    <table class="table table-borderless list">
-        <tr>
-            <td>Nome</td>
-            <td>${nome}</td>
-        </tr>
-        <tr>
-            <td>Cognome</td>
-            <td>${cognome}</td>
-        </tr>
-        <tr>
-            <td>Email</td>
-            <td>${email}</td>
-        </tr>
-        <tr>
-            <td>Ruolo</td>
-            <td>${ruolo}</td>
-        </tr>
-    </table>`;
+    <header>
+    <h1><b>Informazioni Personali</b></h1>
+    </header>
+    <div id="information-container">
+        <div id="personal-information">
+            <p><i><b>Nome</b></i></p>
+            <p>${nome}</p>
+            <br>
+            <p><i><b>Cognome</b></i></p>
+            <p>${cognome}</p>
+            <br>
+            <p><i><b>E-mail</b></i></p>
+            <p>${email}</p>
+            <br>
+            <p><i><b>Ruolo</b></i></p>
+            <p>${ruolo}</p>
+        </div>
+        <div>
+            <img src="../../images/account-icon.png">
+        </div>
+    </div>`;
 }
 export {showAccount};

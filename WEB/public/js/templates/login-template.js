@@ -59,4 +59,12 @@ function createSideNav() {
   return `<a class="nav-link" id="home">Home</a>`;
 }
 
-export {createRegisterForm,createLoginForm,createLogoutForm,createSideNav};
+function createMyProjectsPage() {
+  return `<a class="nav-link" id="my-projects">I miei Progetti</a>`;
+}
+
+function createMyDocumentsPage() {
+  return `<a class="nav-link" id="my-documents">I miei Documenti</a>`;
+}
+
+export {createRegisterForm,createLoginForm,createLogoutForm,createSideNav,createMyProjectsPage,createMyDocumentsPage};

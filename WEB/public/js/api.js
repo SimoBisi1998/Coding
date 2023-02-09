@@ -3,7 +3,7 @@
 class Api {
 
     static doLogin = async(username,password) => {
-        let response = await fetch('/api/sessions/', {
+        let response = await fetch('/api/sessions', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
@@ -142,6 +142,7 @@ class Api {
     }
 
     static doLogout = async() => {
+
         await fetch('/api/sessions/current',{
             method : 'DELETE'
         });
@@ -191,7 +192,8 @@ class Api {
                                 descrizione : project.descrizione,
                                 autore : project.autore,
                                 categoria : project.categoria,
-                                id : project.id
+                                id : project.id,
+                                image : project.immagine
                             }
                             arrayProject.push(proj);
                         }
@@ -289,7 +291,7 @@ class Api {
     }
 
     static deleteComment = async(id_commento,user) => {
-        let response = await fetch('/api/document/delete/:id_commento',{
+        let response = await fetch('/api/comment/delete/:id_commento',{
             method : 'DELETE',
             headers : {
                 'Content-Type' : 'application/json'
@@ -438,5 +440,20 @@ class Api {
         }
     }
 
+    static updateDocument = async(doc) => {
+        let response = await fetch('/api/document/modify',{
+            method : 'PUT',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({doc})
+        });
+        if(response.ok){
+            return;
+        }else {
+            let res = await response.json();
+            throw res;
+        }
+    }
 }
 export default Api;

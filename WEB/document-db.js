@@ -45,6 +45,7 @@ exports.getPaymentDocument = async() => {
 
 exports.deleteDocumentByID = async(idDocument) => {
     return new Promise((resolve,reject) => {
+        console.log(idDocument)
         const sql = 'DELETE FROM documento WHERE id_documento=?';
         db.run(sql,[idDocument],(err) => {
             if(err) reject(err);
@@ -52,6 +53,7 @@ exports.deleteDocumentByID = async(idDocument) => {
         })
     }).then(() => {
         this.deletePaymentByDocID(idDocument);
+        this.deleteAllComments(idDocument);
     })
 }
 
@@ -98,8 +100,8 @@ exports.removeFollowDoc = async(idDocument) => {
 
 exports.postComment = async(commento) => {
     return new Promise((resolve,reject) => {
-        const sql = 'INSERT INTO commento(id_user,id_documento,testo) VALUES (?,?,?)';
-        db.run(sql,[commento.user,commento.id_documento,commento.text],function (err) {
+        const sql = 'INSERT INTO commento(id_user,id_documento,id_progetto,testo) VALUES (?,?,?,?)';
+        db.run(sql,[commento.user,commento.id_documento,commento.id_progetto,commento.text],function (err) {
             if(err) reject(err);
             resolve(this.lastID);
         })
@@ -130,6 +132,26 @@ exports.updateComment = async(commento,id_commento) => {
     return new Promise((resolve,reject) => {
         const sql = "UPDATE commento SET testo = ? WHERE id_commento = ?";
         db.run(sql,[commento,id_commento],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
+
+exports.updateDocument = async(doc) => {
+    return new Promise((resolve,reject) => {
+        const sql = "UPDATE documento SET titolo = ?, descrizione = ?, data = ?, costo = ? WHERE id_documento = ?";
+        db.run(sql,[doc.titolo,doc.descrizione,doc.data,doc.costo,doc.id_documento],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
+
+exports.deleteAllComments = async(idDocument) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM commento WHERE id_documento = ?";
+        db.run(sql,[idDocument],(err) => {
             if(err) reject(err);
             resolve();
         })

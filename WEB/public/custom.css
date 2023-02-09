@@ -1,24 +1,55 @@
+
 #logo {
     width: 50px;
     padding: 5px;
 }
 
 footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    text-align: center;
     width: 100%;
     position: fixed;
     bottom: 0;
-    text-align: center;
 }
+#nav-doc {
+    text-align: center;
+    margin-top: 150px;
+    width: 100%;
+    height: 150px;
+    position: fixed;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  th {
+    background-color: #ddd;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
 
 .block1 {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    width: 100px;
+    text-align: center;
 }
 
+#donationBlock{
+    width: 300px;
+    padding: 8px;
+}
+
+.block1 img {
+    width: 220px;
+    height: 200px; 
+    border-radius: 100px;
+}
 .navbar-brand {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 30px;
@@ -50,32 +81,86 @@ footer {
 
 .box-container {
     display: inline-block;
-    padding-top: 100px;
     padding-inline: 20px;
 }
 
-.newbox-container {
+.new-box-container {
+    margin-top: 50px;
     display: inline-block;
     margin : 0 auto;
+    margin-inline: 110px;
 }
+.block1 h2 {
+    color: #333333;
+    text-shadow: 1px 1px #dddddd;
+    margin-bottom: 20px;
+ }
 
-.registerBlock {
+ .block1 p {
+    
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    color: #333;
+    text-shadow: 1px 1px 1px #ccc;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.5;
+ }
+
+#registerBlock {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 450px;
+    background: #faf9f9;
+    text-align: center;
+    border-radius: 25px;
+    box-shadow: 0px 0px 10px #ccc3c3;
     border-style: solid;
-    border-color:rgba(235, 230, 230, 0.89);
-    justify-content: space-around;
-    padding: 10px;
-    width:400px;
-    height: 380px;
-    background-color:white;
-    border-radius: 10px;
-    margin-left: 15%;
-    box-shadow: 1px 1px 2px 2px ;
-    border: none;
+    border-width: 3px;
+    border-color: #333;
+    margin-top: 50px;
+}
+#star-project {
+    margin-left: auto;
+    padding: 5px;
 }
 
+#registerBlock a {
+    margin-left: auto;
+    padding: 5px;
+}
+
+.max-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-pagamenti {
+    font-size: 20px;
+    font-weight:500;
+    width: 300px;
+    height: 100px;
+}
+#register-button{
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+ }
+
+.table {
+    font-size: 20px;
+}
+
+svg {
+    width: 30px;
+    height: 30px;
+}
 .details-block {
     display: flex;
     flex-direction: column;
@@ -92,6 +177,10 @@ footer {
     display: inline-flex;
     padding-bottom: 112px;
     padding-top: 100px;
+}
+
+#form-value,#second-form-value {
+    width: 350px;
 }
 
 #bottone {
@@ -119,8 +208,9 @@ footer {
 }
 
 hr{
-    width: 35vh;
+    width: 40vh;
 }
+
 
 
 .images {
@@ -186,8 +276,90 @@ hr{
     justify-content: center;
 }
 
-h1 {
+.title-project {
+    color: red;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+    font-weight: 200;
+    font-style:normal;
+}
+
+#personal-information {
+    display: inline-block;
+    margin-inline: 80px;
+    text-align: center;
+    background-color: white;
+    width: 700px;
+    height: 650px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 10px gray;
+}
+
+#information-container {
     display: flex;
     justify-content: center;
-    color: rgba(186, 180, 180, 0.404);
+    align-items: center;
+    height: 100vh;
+}
+
+#personal-information img {
+    align-items: center;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+}
+
+#personal-information p {
+    font-size: 30px;
+    margin-bottom: 20px;
+    clear: both;
+}
+
+
+header {
+    text-align: center;
+    font-size: 40px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.sostieni-button{
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    cursor: pointer;
+    width: 100px;
+}
+
+#totaldonations-button {
+    font-size: 30px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#value {
+    font-size: 20px;
+    font-weight: 100;
+}
+
+#author {
+    margin-left: auto;
+}
+
+#nav-container {
+    font-size: 36px;
+    font-family: Arial, sans-serif;
+    color: #333333;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 50px;
 }
