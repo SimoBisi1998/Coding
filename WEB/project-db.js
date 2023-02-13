@@ -72,10 +72,9 @@ exports.removeFollowProject = (idProject) => {
 
 
 exports.modifyProject = (project,idProject) => {
-    console.log(project.immagine)
     return new Promise((resolve,reject) => {
-        const sql = 'UPDATE progetto SET titolo=?,descrizione=?,autore=?,categoria=?,src=? WHERE id=?';
-        db.run(sql,[project.titolo,project.descrizione,project.autore,project.categoria,project.immagine,idProject],(err) => {
+        const sql = 'UPDATE progetto SET id_user=?,titolo=?,descrizione=?,autore=?,categoria=?,immagine=? WHERE id=?';
+        db.run(sql,[project.id_user,project.titolo,project.descrizione,project.autore,project.categoria,project.image,idProject],(err) => {
             if(err) reject(err);
             resolve();
         })
@@ -92,8 +91,52 @@ exports.deleteProject = async(idProject) => {
         })
     }).then(() => {
         this.deleteAllDocuments(idProject);
-        this.deleteAllComments(idProject)
+        this.deleteAllFollows(idProject);
+        this.deleteAllDonations(idProject);
+        this.deleteAllLikes(idProject)
+        this.deleteAllPayments(idProject);
     }).catch();
+}
+
+exports.deleteAllPayments = async(idProject) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM pagamento WHERE id_progetto=?";
+        db.run(sql,[idProject],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
+
+exports.deleteAllLikes = async(idProject) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM mipiace WHERE id_progetto=?";
+        db.run(sql,[idProject],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
+
+
+exports.deleteAllDonations = async(idProject) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM donazione WHERE id_progetto=?";
+        db.run(sql,[idProject],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
+
+exports.deleteAllFollows = async(idProject) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM follow WHERE id_progetto=?";
+        db.run(sql,[idProject],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
 }
 
 exports.deleteAllDocuments = async(idProject) => {
@@ -103,7 +146,10 @@ exports.deleteAllDocuments = async(idProject) => {
             if(err) reject(err);
             resolve();
         })
-    })
+    }).then(() =>{
+        this.deleteAllComments(idProject)
+    } )
+    
 }
 
 exports.postDonation = async(donazione) => {
@@ -131,6 +177,46 @@ exports.deleteAllComments = async (idProject) => {
         const sql = "DELETE FROM commento WHERE id_progetto=?";
         db.run(sql,[idProject],(err) => {
             if(err) reject(err)
+            resolve();
+        })
+    })
+}
+
+exports.postLikeProject = async(idProject,user) => {
+    return new Promise((resolve,reject) => {
+        const sql = "INSERT INTO mipiace(id_progetto,user_email) VALUES (?,?)";
+        db.run(sql,[idProject,user],function(err) {
+            if(err) reject(err);
+            resolve(this.lastID);
+        })
+    })
+}
+
+exports.getAllLikesProject = async() => {
+    return new Promise((resolve,reject) => {
+        const sql = "SELECT mp.id_progetto as idProject,Count(id_progetto) as numberLikes from mipiace mp GROUP BY id_progetto ORDER BY Count(id_progetto) DESC";
+        db.all(sql,(err,rows) => {
+            if(err)reject(err);
+            resolve(rows);
+        })
+    })
+}
+
+exports.getLikesProjects = async() => {
+    return new Promise((resolve,reject) => {
+        const sql = "SELECT * FROM mipiace";
+        db.all(sql,(err,rows) => {
+            if(err)reject(err);
+            resolve(rows);
+        })
+    })
+}
+
+exports.removeLikeProject = async(idProject,user) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM mipiace WHERE id_progetto=? AND user_email=?";
+        db.run(sql,[idProject,user],(err) => {
+            if(err)reject(err);
             resolve();
         })
     })

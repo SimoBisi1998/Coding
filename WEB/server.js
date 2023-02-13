@@ -307,7 +307,7 @@ app.post('/api/documents',(req,res) => {
 //Request body : id del documento e i dati relativi al pagamento
 //Response body : /
 app.post('/api/document/buy/:id_documento',(req,res)=> {
-  documentDb.insertBuyDocument(req.body.idDocument,req.body.payment)
+  documentDb.insertBuyDocument(req.body.idDocument,req.body.payment,req.body.idProject)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({msg : "Error during the insert payment's document"}));
 })
@@ -370,6 +370,42 @@ app.put('/api/document/modify',(req,res) => {
   documentDb.updateDocument(req.body.doc)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({msg : "Error during update document"}))
+})
+
+//POST /api/project/like per aggiungere un like ad un progetto
+//REquest body : id del progetto,utente loggato che ha messo mi piace
+//Response body : /
+app.post('/api/project/like',(req,res) => {
+  projectDb.postLikeProject(req.body.idProject,req.body.user)
+  .then(() => res.end())
+  .catch(() => res.status(503).json({msg : "Error during post like project."}))
+})
+
+//GET /api/project/likes per ottenere il numero di like totali assegnati ad ogni progetto
+//Request body : /
+//Response body : lista composta da {idProject : numberLikes}
+app.get('/api/project/like',(req,res) => {
+  projectDb.getAllLikesProject()
+  .then((result) => res.json(result))
+  .catch(() => res.status(503).json({msg : "Error during get likes project"}))
+})
+
+//GET /api/project/like diversa dalla chiamata precedente dato che mi ritorna solo i progetti che hanno ricevuto like
+//Request body : /
+//Response body : lista di progetti con mi piace
+app.get('/api/project/likes',(req,res) => {
+  projectDb.getLikesProjects()
+  .then((result) => res.json(result))
+  .catch(() => res.status(503).json({msg : "Error during get likes project"}))
+})
+
+//DELETE /project/remove/like per rimuovere un like da un progetto
+//Request body : id del progetto,l'utente che vuole togliere il like
+//Response body : /
+app.delete('/project/remove/like',(req,res) => {
+  projectDb.removeLikeProject(req.body.idProject,req.body.user)
+  .then(() => res.status(201).end())
+  .catch(() => res.status(503).json({msg : "Error during remove like project"}).end())
 })
 
 app.get('*', function (request, response) {

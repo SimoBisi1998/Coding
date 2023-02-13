@@ -43,6 +43,60 @@ class Api {
         }
     }
 
+    static likeProject = async(idProject,user) => {
+        let res = await fetch('/api/project/like', {
+            method : 'POST',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({idProject,user})
+        })
+        if(res.ok){
+            return;
+        }else {
+            let err = await res.json();
+            throw err;
+        }
+    }
+
+    static getLikesProject = async() => {
+        let res = await fetch('/api/project/likes');
+        if(res.ok){
+            let response = await res.json();
+            return response;
+        }else {
+            let err = await res.json();
+            throw err;
+        }
+    }
+
+    static getProjectByLike = async() => {
+        let res = await fetch('/api/project/like');
+        if(res.ok){
+            let response = await res.json();
+            return response;
+        }else {
+            let err = await res.json();
+            throw err;
+        }
+    }
+
+    static removeLikeProject = async(idProject,user) => {
+        let res = await fetch('/project/remove/like',{
+            method : 'DELETE',
+            headers : {
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify({idProject,user})
+        });
+        if(res.ok){
+            return;
+        }else {
+            let err = await res.json();
+            return err;
+        }
+    }
+
     static verifyRegister = async(email) => {
         let response = await fetch('/users');
         if(response.ok){
@@ -337,13 +391,13 @@ class Api {
         }
     }
 
-    static buyDocument = async(idDocument,payment) => {
+    static buyDocument = async(idDocument,payment,idProject) => {
         let response = await fetch('/api/document/buy/:id_documento', {
             method : 'POST',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify({idDocument,payment})
+            body : JSON.stringify({idDocument,payment,idProject})
         });
         if(response.ok) {
             return;

@@ -22,11 +22,10 @@ exports.getDocs = async() => {
     })
 }
 
-exports.insertBuyDocument = async(idDocument,payment) => {
-
+exports.insertBuyDocument = async(idDocument,payment,idProject) => {
     return new Promise((resolve,reject) => {
-        const sql = 'INSERT INTO pagamento(id_pagamento,id_doc,nome,cognome,tipo,numero,CCV) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        db.run(sql,[payment.id,idDocument,payment.nome,payment.cognome,payment.tipo,payment.numero,payment.CCV],(err) => {
+        const sql = 'INSERT INTO pagamento(id_pagamento,id_doc,nome,cognome,tipo,numero,CCV,id_progetto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        db.run(sql,[payment.id,idDocument,payment.nome,payment.cognome,payment.tipo,payment.numero,payment.CCV,idProject],(err) => {
             if(err) reject(err);
             resolve(this.lastID);
         })
@@ -45,7 +44,6 @@ exports.getPaymentDocument = async() => {
 
 exports.deleteDocumentByID = async(idDocument) => {
     return new Promise((resolve,reject) => {
-        console.log(idDocument)
         const sql = 'DELETE FROM documento WHERE id_documento=?';
         db.run(sql,[idDocument],(err) => {
             if(err) reject(err);
@@ -58,7 +56,6 @@ exports.deleteDocumentByID = async(idDocument) => {
 }
 
 exports.deletePaymentByDocID = async(idDocument) => {
-    console.log(idDocument);
     return new Promise((resolve,reject) => {
         const sequel = 'DELETE FROM pagamento WHERE id_doc=?';
         db.run(sequel,[idDocument],(err) => {

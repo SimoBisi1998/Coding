@@ -7,14 +7,16 @@ import Payment from './payment.js';
 import Comment from './comment.js';
 import { createFormProject, createNewForm,createProjectHTML,projectPage,projectPageFinanziatore,createFollowProjectTemplate,addModifyButton,
 createListOfDonator,createListOfComment,deleteCommentButton ,createListOfDocuments,createExitForm, createCarrello, buyedDoc,createListOfDocumentsBought,
-deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm,commentFormNew,modifyDocument,formDoc,createModForm, projectPageUndefined, imageFollowProject,starProject} from './templates/project-template.js';
+deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm,commentFormNew,modifyDocument,formDoc,createModForm, 
+projectPageUndefined, imageFollowProject,starProject,likeProject,notLikeProject} from './templates/project-template.js';
 import page from '//unpkg.com/page/page.mjs';
 import {createRegisterForm,createLoginForm,createLogoutForm,createSideNav} from './templates/login-template.js';
 import {createAlert} from './templates/alert-template.js';
 import {showAccount} from './templates/account-template.js';
-import {createEmptyApp,createDonationMethod, createPaymentDocument,createNavProjects} from './templates/app-template.js';
+import {createEmptyApp,createDonationMethod, createPaymentDocument} from './templates/app-template.js';
 
-
+//risolvere delete cascade pagamento documento
+//finish
 class App {
     constructor(navContainer,appContainer,searchContainer,navLeft) {
         this.appContainer = appContainer;
@@ -23,9 +25,9 @@ class App {
         this.navLeft = navLeft;
         this.user;
         this.projects;
-        this.copyApp = this.appContainer.innerHTML;;
-        this.copyNavbar = this.navContainer.innerHTML;;
-        this.copySearch = this.searchContainer.innerHTML;;
+        this.copyApp = this.appContainer.innerHTML;
+        this.copyNavbar = this.navContainer.innerHTML;
+        this.copySearch = this.searchContainer.innerHTML;
         let myhome = false;
         
         //copia dell'init per ripristinare correttamente gli oggetti della pagina iniziale
@@ -35,13 +37,14 @@ class App {
         });
 
         page('/signup', async() => {
-            appContainer.innerHTML = '';
-            navContainer.innerHTML = '';
+            this.appContainer.innerHTML = '';
+            this.navContainer.innerHTML = '';
+            this.secondAppContainer.innerHTML = '';
             this.onRegisterButtonSubmitted();
         });
 
         page('/login',() => {
-            this.appContainer.innerHTML = this.copyApp;
+            this.appContainer.innerHTML = this.showProject();
             this.navContainer.innerHTML = '';
             this.onLoginButtonSubmitted();
         });
@@ -107,8 +110,52 @@ class App {
             this.modifyDocument(req.params.id_documento);
         })
 
+        page('/project/like/:id_progetto',(req) => {
+            this.likeProject(req.params.id_progetto);
+        })
+
 
         page();
+    }
+
+    likeProject = async(idProject) => {
+        let alertMessage = document.getElementById('alert-message');
+
+        //GET dei progetti con like
+        let res = await Api.getLikesProject();
+        try {
+            //Per ogni progetto con il like,controllo se appartiene all'utente loggato
+            for(let like of res) {
+                //Se è presente tra i progetti con i like,allora il secondo click effettuato è per togliere il like dal progetto
+                if(like.id_progetto == idProject && like.user_email === this.user) {
+                    document.getElementById('likeProject').innerHTML = notLikeProject(idProject);
+                    //Eseguo la delete del like del progetto
+                    await Api.removeLikeProject(idProject,this.user);
+                    alertMessage.innerHTML = createAlert('success','Like tolto correttamente!');
+                    setTimeout(() => {
+                        alertMessage.innerHTML = '';
+                    },2000);
+                    history.back();
+                    return;
+                }
+            }
+            //Altrimenti metto like al progetto
+            await Api.likeProject(idProject,this.user);
+            alertMessage.innerHTML = createAlert('success','Mi piace aggiunto correttamente!');
+            setTimeout(() => {
+                alertMessage.innerHTML = '';
+            },2000);
+            //await this.showOneProject(localStorage.getItem('idProject'));
+            history.back();
+        }catch(err) {
+            alertMessage.innerHTML = createAlert('danger','Hai già messo mi piace al progetto!');
+            setTimeout(() => {
+                alertMessage.innerHTML = '';
+            },3000);
+            history.back();
+            throw err;
+            
+        }
     }
 
     /**Handler per la route "page('/project/:id')" che visualizza la pagina con tutte le informazioni del progetto
@@ -116,26 +163,27 @@ class App {
      */
     projectPageHandler = async(req) => {
         const idProject = req.params.id;
-            const role = await this.verifyUser(this.user);
-            localStorage.setItem('idProject',idProject);
-            localStorage.setItem('role',role);
-            
-            this.searchContainer.innerHTML = '';
-            await this.showOneProject(idProject);
-            if(role!=='undefined'){
-                if(role===true){
-                    this.navContainer.innerHTML = addModifyButton();
-                    this.verifyUserByProjectID(this.user,idProject); 
-                    document.getElementById('elimina-progetto').addEventListener('click',async() => {
-                        this.deleteProject(idProject,this.user);
-                    })
-                    document.getElementById('modifica-progetto').addEventListener('click',async() => {
-                        this.modifyProject(idProject);
-                    })
-                    document.getElementById('crea-documento').addEventListener('click',async(event) => {
-                        this.createDoc(idProject);
-                    });
-                }
+        const role = await this.verifyUser(this.user);
+
+        localStorage.setItem('idProject',idProject);
+        localStorage.setItem('role',role);
+
+        this.searchContainer.innerHTML = '';
+        await this.showOneProject(idProject);
+        if(role!=='undefined'){
+            if(role===true){
+                this.navContainer.innerHTML = addModifyButton();
+                this.verifyUserByProjectID(this.user,idProject); 
+                document.getElementById('elimina-progetto').addEventListener('click',async() => {
+                    this.deleteProject(idProject,this.user);
+                })
+                document.getElementById('modifica-progetto').addEventListener('click',async() => {
+                    this.modifyProject(idProject);
+                })
+                document.getElementById('crea-documento').addEventListener('click',async(event) => {
+                    this.createDoc(idProject);
+                });
+            }
                 document.getElementById('my-account').addEventListener('click',() => {
                     page('/info');
                 })
@@ -215,6 +263,7 @@ class App {
         this.navContainer.innerHTML = this.copyNavbar;
         this.appContainer.innerHTML = this.showProject();
         this.searchContainer.innerHTML = this.copySearch;
+
         document.getElementById('signup').addEventListener('click',() => {
             page('/signup');
         });
@@ -227,7 +276,7 @@ class App {
         document.getElementById('search-form').addEventListener('submit',async(event) => {
             this.showFilteredProjects(event);
         });
-        this.projects = await this.showProject();
+        
     }
     /**Modifica documento 
 
@@ -415,6 +464,7 @@ class App {
             setTimeout(() => {
                 alertMessage.innerHTML = '';
             },3000);
+            history.back();
             throw err;
         }
     }
@@ -439,6 +489,7 @@ class App {
             setTimeout(() => {
                 alertMessage.innerHTML = '';
             },3000);
+            history.back();
             throw error;
         }
 
@@ -491,7 +542,7 @@ class App {
                 //Istanzio l'oggetto payment composto dai campi presi dal paymentForm
                 let payment = new Payment(paymentForm.nome.value,paymentForm.cognome.value,paymentForm.tipo.value,paymentForm.numero.value,paymentForm.CCV.value);
                 //Eseguo la POST
-                await Api.buyDocument(idDocument,payment);
+                await Api.buyDocument(idDocument,payment,localStorage.getItem("idProject"));
                 alertMessage.innerHTML = createAlert('success','Pagamento avvenuto con successo!');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
@@ -502,6 +553,7 @@ class App {
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
+                history.back();
                 throw error;
             }
         })
@@ -546,96 +598,17 @@ class App {
                     alertMessage.innerHTML = '';
                 },3000);
 
-                this.showDocuments(doc,docID);
+                this.showOneProject(idProject)
+                //this.showDocuments(doc,docID);
             }catch(error) {
                 alertMessage.innerHTML = createAlert('danger','Documento non aggiunto.');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
+                history.back();
+                throw error;
             }
         })
-    }
-
-    /**Metodo per mostrare i documenti appena inseriti
-     * 
-     * @param {*} doc 
-     * @param {*} docID 
-     */
-
-    showDocuments = async(doc,docID)=>{
-        const documentsTable = document.querySelector('#documents-table');
-
-
-        //se l'utente non è loggato
-        if(this.user == 'undefined') {
-            const documents = createListOfDocumentsBought(docID,doc.titolo,doc.descrizione,doc.data,doc.costo,"","","");
-            documentsTable.insertAdjacentHTML('beforeend',documents);
-        }
-        else {
-            //GET dei documenti acquistati
-            let payment = await Api.getPayment();
-
-            //GET dei documenti seguiti
-            let followDoc = await Api.getFollowDoc();
-
-            //Controllo se un documento è stato acquistato oppure no
-            let pay = [];
-            payment.forEach((paym) => {
-                pay.push(paym.id_doc);
-            })
-
-            let basket = "";
-            let modify = "";
-            let heart="";
-            //Se è presente il documento tra i pagamenti del cliente
-            if(pay.includes(doc.id)){
-                let shop = buyedDoc();
-                let value = doc.costo;
-                let symbol = "€"
-                basket = "";
-                modify="";
-                if(await this.verifyUserByProjectID(this.user,localStorage.getItem('idProject')) === true) {
-                    basket = deleteDocumentButton();
-                    modify = formDoc();
-                }
-                //Creo la lista dei documenti acquistati che verrà inserita nella documents-table
-                const documents = createListOfDocumentsBought(docID,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,modify);
-                documentsTable.insertAdjacentHTML('beforeend',documents);
-            }else {
-                let ruoloUser = await Api.getInfo(this.user);
-                let shop = createCarrello();
-                let value = doc.costo;
-                let symbol = "€"
-                basket = "";
-                modify="";
-                heart="";
-                if(doc.costo == 0) {
-                    value = "Gratis";
-                    symbol = "";
-                    shop = "";
-                }
-                if(await this.verifyUserByProjectID(this.user,localStorage.getItem('idProject')) === true) {
-                    basket = deleteDocumentButton();
-                    modify = formDoc();
-                }else {
-                    if(ruolo)
-                    if(ruoloUser.ruolo === 'finanziatore') {
-                        heart = HTMLfollowDocument();
-                    }
-                }
-                for(let follow of followDoc){
-                    if(follow.id_documento == doc.id_documento && this.user == follow.user_email) {
-                        heart = followedDoc();
-                        checkFollow = true;
-                    }
-                }
-                //Creo la lista documenti diversa rispetto a quella precedente
-                const documents = createListOfDocuments(docID,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,heart,modify,ruoloUser.ruolo);
-                if(documents!=null) {
-                    documentsTable.insertAdjacentHTML('beforeend',documents);
-                }
-                }
-        }
     }
 
     /**Metodo per eliminare un commento tramite l'id di esso
@@ -658,6 +631,7 @@ class App {
             setTimeout(() => {
                 alertMessage.innerHTML = '';
             },3000);
+            history.back();
             throw error;
         }
     }
@@ -687,6 +661,8 @@ class App {
             setTimeout(() => {
                 alertMessage.innerHTML = '';
             },3000);
+            history.back();
+            throw error;
         }
     }
     /**Metodo che viene richiamato dalla onCommentButtonSubmitted quando viene inserito un nuovo commento
@@ -749,6 +725,7 @@ class App {
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
+                history.back();
                 throw error;
             }
         })
@@ -770,7 +747,7 @@ class App {
      */
 
     modifyProject(idProject) {
-        const command = document.getElementById('command-form');
+        const command = document.getElementById('modify-template-form');
         command.innerHTML = createModForm();
 
         //Viene eseguita la submit del form
@@ -779,19 +756,29 @@ class App {
             const alert = document.getElementById('alert-message');
             const modifyForm = document.getElementById('modify-form');
 
+            let userID = await Api.verifyRegister(this.user)
+
             //Prendo i dati dal form
             const title = modifyForm.elements['mod-title'].value;
             const description = modifyForm.elements['mod-description'].value;
             const author = modifyForm.elements['mod-author'].value;
             const category = modifyForm.elements['mod-category'].value;
-            const image = modifyForm.elements['mod-image'].value;
-            const project = new Project(title,description,author,category,image);
+            const img = modifyForm.elements['mod-image'].value;
+
+            let tmp = [];
+            tmp = img.split("\\");
+            tmp = tmp[2].split(".");
+    
+
+            const project = new Project(userID,title,description,author,category,tmp[0]);
             
+            
+
             try {
                 //Eseguo la PUT dei nuovi valori 
                 await Api.modifyProject(project,idProject);
-                modifyForm.reset();
-                document.getElementById('close-modal').click();
+                //modifyForm.reset();
+                //document.getElementById('close-modal').click();
                 alert.innerHTML = createAlert('success',`Il progetto è stato modificato correttamente!`);
                 setTimeout(() => {
                     alert.innerHTML = '';
@@ -802,6 +789,7 @@ class App {
                 setTimeout(() => {
                     alert.innerHTML = '';
                 },3000);
+                history.back();
                 throw(error);
             }
         })
@@ -865,6 +853,7 @@ class App {
             setTimeout(() => {
                 alertMessage.innerHTML = '';
             },3000);
+            history.back();
             throw err;
         }
     }
@@ -879,6 +868,7 @@ class App {
             await Api.removeThisProject(idProject);
             page.redirect('/home');
         }catch(error){
+            history.back();
             throw error;
         }
     }
@@ -909,7 +899,7 @@ class App {
      */
     
     showOneProject = async(id) => {
-        
+
         let totalDonations = 0;
         let arrayUser = [];
         
@@ -935,6 +925,9 @@ class App {
         //Controllo il tipo di utente loggato correntemente
         const ruolo = await this.verifyUser(this.user);
 
+        //GET dei progetti con il mi piace
+        const likesProject = await Api.getLikesProject();
+
         for(let proj of projects) {
             if(proj.id == id) {
                 
@@ -949,6 +942,8 @@ class App {
                 })
 
                 let favourites = "";
+                let like = "";
+                let checkLike = false;
                 //Se è un creatore
                 if(ruolo==true) {
                     favourites = starProject(proj.id);
@@ -961,12 +956,21 @@ class App {
                 //SE è un finanziatore
                 }else if(ruolo==false){
                     favourites = starProject(proj.id);
+                    like = notLikeProject(proj.id);
                     for(let fproj of followProj){
                         if(fproj.id == proj.id) {
                             favourites = imageFollowProject(proj.id);
                         }
                     }
-                    this.appContainer.innerHTML = projectPageFinanziatore(proj.id,proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,proj.immagine,favourites);    
+                    for(let like of likesProject){
+                        if(like.id_progetto == proj.id && this.user == like.user_email) {
+                            checkLike = true;
+                        }
+                    }
+                    if(checkLike){
+                        like = likeProject(proj.id);
+                    } 
+                    this.appContainer.innerHTML = projectPageFinanziatore(proj.id,proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,proj.immagine,favourites,like);    
                 //Se non è registrato e quindi non è loggato
                 }else if(ruolo == 'undefined') {
                     this.appContainer.innerHTML = projectPageUndefined(proj.id,proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,proj.immagine);    
@@ -987,12 +991,14 @@ class App {
 
                 if(this.user == 'undefined') {
                     documents.forEach((doc) => {
-                        let symbol = "€";
+                        if(doc.id_progetto == id) {
+                            let symbol = "€";
                         if(doc.costo==0) {
                             doc.costo = "Gratis";
                             symbol = "";
                         }
                         document.getElementById('documents-table').innerHTML += createListOfDocuments(doc.id_documento,doc.titolo,doc.descrizione,doc.data,doc.costo,symbol,"","","","",ruolo);
+                        }
                     })
                 }else {
                         //Documenti
@@ -1003,6 +1009,7 @@ class App {
                             if(doc.id_progetto == id){
                                 if(pay.includes(doc.id_documento)){
                                     let shop = buyedDoc();
+                                    heart = HTMLfollowDocument();
                                     let value = doc.costo;
                                     let symbol = "€"
                                     basket = "";
@@ -1010,9 +1017,15 @@ class App {
                                     if(await this.verifyUserByProjectID(this.user,localStorage.getItem('idProject')) === true) {
                                         basket = deleteDocumentButton(doc.id_documento);
                                         modify = formDoc();
-                                    }else {
                                     }
-                                    document.getElementById('documents-table').innerHTML += createListOfDocumentsBought(doc.id_documento,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,modify);
+                                    for(let follow of followDoc){
+                                        if(follow.id_documento == doc.id_documento && this.user == follow.user_email) {
+                                            heart = followedDoc();
+                                            
+                                        }
+                                    }
+                                    
+                                    document.getElementById('documents-table').innerHTML += createListOfDocumentsBought(doc.id_documento,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,modify,heart,ruolo);
                                 }else {
                                     let checkFollow = false;
                                     let shop = createCarrello();
@@ -1043,6 +1056,7 @@ class App {
                                             checkFollow = true;
                                         }
                                     }
+                                    
                                     document.getElementById('documents-table').innerHTML += createListOfDocuments(doc.id_documento,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,heart,modify,ruolo);
                                 }
                             }   
@@ -1100,6 +1114,8 @@ class App {
                 setTimeout(() => {
                     alert.innerHTML = '';
                 },3000);
+                history.back();
+                throw error;
             }
     });
 
@@ -1128,6 +1144,8 @@ class App {
                 setTimeout(() => {
                     alert.innerHTML = '';
                 },3000);
+                history.back();
+                throw error;
             }
         })
     }
@@ -1173,6 +1191,7 @@ class App {
                     setTimeout(() => {
                         alert.innerHTML = '';
                     },3000);
+                    history.back();
                     throw(error);
                 }
             })
@@ -1184,11 +1203,38 @@ class App {
      */
     showProject = async() => {
         const projects = await Api.getProjects();
-        this.appContainer.innerHTML = '';
-        for(let project of projects){
-            this.appContainer.innerHTML += createProjectHTML(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.immagine);
+        this.appContainer.innerHTML = ''; 
+        let result = await Api.getProjectByLike();
+        let arrayLike = [];
+        for(let x of result){
+            arrayLike.push(x);
         }
+        let i = 0;
+        let check = false;
+        //Per ogni progetto,controllo se l'index appartiene all'insieme dei progetti con dei like (arrayLike)
+        for(let project of projects){
+            //Se undefined vuol dire che non è presente
+            if(arrayLike[i] == undefined) {
+                check = true;
+            }
+            if(check == false){
+                if(arrayLike.indexOf(project.id)){
+                    let x = arrayLike[i].numberLikes;
+                    this.appContainer.insertAdjacentHTML('beforeend',createProjectHTML(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.immagine,x));
+                }
+            }else {
+                let x = 0
+                this.appContainer.insertAdjacentHTML('beforeend',createProjectHTML(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.immagine,x));
+            }
+            
+            i++;
+        }
+        
         return projects;
+    }
+
+    getMostLikelyProject = async() => {
+        
     }
     
     /**Metodo per ottenere le informazioni dell'utente loggato
@@ -1201,7 +1247,8 @@ class App {
             this.searchContainer.innerHTML = showAccount(info.nome,info.cognome,info.email,info.ruolo);
             this.appContainer.innerHTML = '';
         }catch(error){
-            throw(error);
+            history.back();
+            throw error;
         }
     }
 
