@@ -10,6 +10,7 @@ const path = require('path');
 const session = require('express-session');
 const passport = require('passport'); // auth middleware
 const LocalStrategy = require('passport-local').Strategy;
+const download = require('download');
 const {body,check, validationResult} = require('express-validator');
 
 
@@ -96,11 +97,19 @@ app.post('/api/sessions', function(req, res, next) {
 //Response body: vuoto
 
 app.post('/api/users',[
-  check('email').notEmpty(),
-  check('password').notEmpty(),
-  check('nome').notEmpty(),
-  check('cognome').notEmpty(),
-  check('ruolo').notEmpty()
+  check('email')
+  .notEmpty()
+  .withMessage("Invalid value, email can't be empty")
+  .isLowercase(),
+  check('password')
+  .notEmpty()
+  .withMessage("Invalid password, password can't be empty"),
+  check('nome')
+  .notEmpty()
+  .withMessage("Invalid name, name can't be empty"),
+  check('cognome')
+  .notEmpty()
+  .withMessage("Invalid surname, surname can't be empty")
 ],
   (req, res) => {
   const error = validationResult(req);
@@ -140,10 +149,31 @@ app.delete('/api/sessions/current', function(req, res,next){
 //nel body nella richiesta in formato json 
 //Request body: oggetto project = {titolo,descrizione,autore,categoria,src}
 //Response body: /
-app.post("/api/projects",isLoggedIn,(req,res) => {
-  const result = validationResult(req);
-  if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
+app.post("/api/projects",[
+  body('project.titolo')
+  .notEmpty()
+  .withMessage("Invalid title,it can't be empty")
+  .isString()
+  .withMessage("Invalid title,it must be a string"),
+  body('project.descrizione')
+  .notEmpty()
+  .withMessage("Invalid description,it can't be empty")
+  .isString()
+  .withMessage("Invalid description,it must be a string"),
+  body('project.autore')
+  .notEmpty()
+  .withMessage("Invalid author,it can't be empty")
+  .isString()
+  .withMessage("Invalid author,it must be a string"),
+  body('project.categoria')
+  .notEmpty()
+  .withMessage("Invalid category, it can't be empty")
+  .isString()
+  .withMessage("Invalid category,it must be a string")
+],(req,res) => {
+  const result = validationResult(req).array();
+  if (result && result.length) {
+    return res.status(422).json({ error : result});
   }
   projectDb.createProject(req.body.project)
   .then((index) => res.status(201).header('Location',`/project/${index}`).end())
@@ -155,7 +185,9 @@ app.post("/api/projects",isLoggedIn,(req,res) => {
 //Response body : oggetto project{..} in formato json
 app.get('/project/:id',(req,res) => {
   projectDb.selectProjectID(req.params.id)
-  .then((row) => res.json(row))
+  .then((row) => 
+    res.json(row)
+    )
   .catch(() => res.status(404).json({msg : "cannot select project ID"}));
 })
 
@@ -190,7 +222,8 @@ app.get('/api/project/follow',(req,res) => {
 //Request body : id del progetto seguito da eliminare
 //Response body : /
 app.delete('/project/follow/:id',(req,res) => {
-  projectDb.removeFollowProject(req.body.idProject)
+  console.log(req.body.user)
+  projectDb.removeFollowProject(req.body.idProject,req.body.user)
   .then(() => res.send())
   .catch(() => res.status(503).json({error : "Not eliminated followed project."}))
 })
@@ -198,7 +231,7 @@ app.delete('/project/follow/:id',(req,res) => {
 //PUT /api/project/modify per applicare delle modifiche ad un determinato progetto
 //Request body : il nuovo oggetto project con i nuovi campi da inserire, id del progetto da modificare
 //Response body : /
-app.put('/api/project/modify',(req,res) => {
+app.put('/api/project/modify',[],(req,res) => {
   projectDb.modifyProject(req.body.project,req.body.idProject)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({error : "Project not modified"}))
@@ -217,15 +250,27 @@ app.delete('/api/project/delete',(req,res) => {
 //Request body : insieme dei dati relativi alla donazione
 //Response body : /
 app.post('/api/project/donation',[
+  check('nome')
+  .notEmpty()
+  .withMessage("Invalid name,it can't be empty")
+  .isString()
+  .withMessage("Invalid name,it must be a string"),
+  check('cognome')
+  .notEmpty()
+  .withMessage("Invalid title,it can't be empty")
+  .isString()
+  .withMessage("Invalid title,it must be a string"),
   check('numero')
+  .notEmpty()
   .isLength(16)
-  .withMessage("La lunghezza deve essere di 16 cifre"),
+  .withMessage("La lunghezza del numero deve essere di 16 cifre"),
   check('numero')
   .isNumeric()
   .withMessage("Deve contenere solo numeri."),
   check('CCV')
+  .notEmpty()
   .isLength(3)
-  .withMessage("La lunghezza deve essere di 3 cifre"),
+  .withMessage("La lunghezza del CCV deve essere di 3 cifre"),
   check('CCV')
   .isNumeric()
   .withMessage("Deve contenere solo numeri")  
@@ -252,7 +297,17 @@ app.post('/api/project/donation',[
 //POST /api/document/comment per inserire un commento relativo ad un documento
 //Request body : commento
 //Response body : restituisce l'id del commento appena creato
-app.post('/api/document/comment',(req,res) => {
+app.post('/api/document/comment',[
+  body('commento.text')
+  .notEmpty()
+  .withMessage('Invalid text, it cant be empty')
+  .isString()
+  .withMessage("Invalid text, it can't be a number")
+],(req,res) => {
+  const result = validationResult(req).array();
+  if (result && result.length) {
+    return res.status(422).json({ error : result});
+  }
   documentDb.postComment(req.body.commento)
   .then((id) => res.status(201).json(id))
   .catch(() => res.status(503).end())
@@ -294,10 +349,31 @@ app.delete('/api/comment/delete/:id_commento',(req,res) => {
   .catch(() => res.status(503).json({msg : "Error during the delete of comment."}));
 })
 
-//POST api/documents per inserire un nuovo commento
+//POST api/documents per inserire un nuovo documento
 //Request body : documento da inserire
 //Response body : l'id del documento appena creato
-app.post('/api/documents',(req,res) => {
+app.post('/api/documents',[
+  body('doc.titolo')
+  .notEmpty()
+  .withMessage("Invalid title,it can't be empty")
+  .isString()
+  .withMessage("Invalid name,it must be a string"),
+  body('doc.descrizione')
+  .notEmpty()
+  .withMessage("Invalid description,it can't be empty")
+  .isString()
+  .withMessage("Invalid name,it must be a string"),
+  body('doc.data')
+  .notEmpty()
+  .withMessage("Invalid data,it can't be empty"),
+  body('doc.costo')
+  .isNumeric()
+  .withMessage("Invalid costo,it must be a number")
+],(req,res) => {
+  const result = validationResult(req).array();
+  if (result && result.length) {
+    return res.status(422).json({ error : result});
+  }
   documentDb.postDocument(req.body.doc)
   .then((id) => res.status(201).json(id))
   .catch(() => res.status(503).json({msg : "Error during Post Document"}));
@@ -306,7 +382,33 @@ app.post('/api/documents',(req,res) => {
 //POST /api/document/buy/:id_documento per acquistare un documento
 //Request body : id del documento e i dati relativi al pagamento
 //Response body : /
-app.post('/api/document/buy/:id_documento',(req,res)=> {
+app.post('/api/document/buy/:id_documento',[
+body('payment.nome')
+.notEmpty()
+.withMessage("Invalid name, it can't be empty")
+.isString()
+.withMessage("Invalid name, it must be a string"),
+body('payment.cognome')
+.notEmpty()
+.withMessage("Invalid surname, it can't be empty")
+.isString()
+.withMessage("Invalid surname, it must be a string"),
+body('payment.numero')
+.isLength(16)
+.withMessage("La lunghezza deve essere di 16 cifre"),
+body('payment.numero')
+.isNumeric()
+.withMessage("Deve contenere solo numeri."),
+body('payment.CCV')
+.isLength(3)
+.withMessage("La lunghezza deve essere di 3 cifre"),
+body('payment.CCV')
+.isNumeric()
+.withMessage("Deve contenere solo numeri")  ],(req,res)=> {
+  const result = validationResult(req).array();
+  if (result && result.length) {
+    return res.status(422).json({ error : result});
+  }
   documentDb.insertBuyDocument(req.body.idDocument,req.body.payment,req.body.idProject)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({msg : "Error during the insert payment's document"}));
@@ -346,10 +448,10 @@ app.get('/document/follow',(req,res) => {
 })
 
 //DELETE /document/remove/follow per togliere il follow da un documento
-//Request body : id del documento
+//Request body : id del documento ed id dell'utente che vuole togliere il follow
 //Response body : /
 app.delete('/document/remove/follow',(req,res) => {
-  documentDb.removeFollowDoc(req.body.idDocument)
+  documentDb.removeFollowDoc(req.body.idDocument,req.body.user)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({msg : "Error during delete the saveddocument"}))
 })
@@ -357,7 +459,15 @@ app.delete('/document/remove/follow',(req,res) => {
 //PUT /api/document/comment/update per modificare il testo di un commento
 //Request body : testo del commento,id del commento
 //Response body : /
-app.put('/api/document/comment/update',(req,res) => {
+app.put('/api/document/comment/update',[
+  body('commento')
+  .notEmpty().
+  withMessage('Invalid value, it cant be empty')
+],(req,res) => {
+  const result = validationResult(req).array();
+  if (result && result.length) {
+    return res.status(422).json({ error : result});
+  }
   documentDb.updateComment(req.body.commento,req.body.id_commento)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({msg : "Error during modify comment"}))
@@ -366,8 +476,33 @@ app.put('/api/document/comment/update',(req,res) => {
 //PUT /api/document/modify per modificare un documento
 //Request body : documento modificato
 //Response body : /
-app.put('/api/document/modify',(req,res) => {
-  documentDb.updateDocument(req.body.doc)
+app.put('/api/document/modify',[
+  body('doc.titolo')
+  .notEmpty()
+  .withMessage("Invalid title,it can't be empty")
+  .isString()
+  .withMessage("Invalid title,it must be a string"),
+  body('doc.descrizione')
+  .notEmpty()
+  .withMessage("Invalid description,it can't be empty")
+  .isString()
+  .withMessage("Invalid description,it must be a string"),
+  body('doc.data')
+  .notEmpty()
+  .withMessage("Invalid data,it can't be empty")
+  .isString()
+  .withMessage("Invalid name,it must be a string"),
+  body('doc.costo')
+  .isNumeric()
+  .withMessage("Invalid costo, it must be a number")
+  .isInt({min: 5})
+  .withMessage("Invalid costo,it can't be < 5"),
+],(req,res) => {
+  const result = validationResult(req).array();
+  if (result && result.length) {
+    return res.status(422).json({ error : result});
+  }
+  documentDb.updateDocument(req.body.doc,req.body.docID)
   .then(() => res.status(201).end())
   .catch(() => res.status(503).json({msg : "Error during update document"}))
 })

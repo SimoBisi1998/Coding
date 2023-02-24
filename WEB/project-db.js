@@ -60,10 +60,11 @@ exports.getFollowProject = () => {
     })
 }
 
-exports.removeFollowProject = (idProject) => {
+exports.removeFollowProject = (idProject,user) => {
+    console.log(user)
     return new Promise((resolve,reject) => {
-        const sql = 'DELETE FROM follow WHERE id_progetto=?';
-        db.run(sql,[idProject],(err) => {
+        const sql = 'DELETE FROM follow WHERE id_progetto=? AND user_email = ?';
+        db.run(sql,[idProject,user],(err) => {
             if(err) reject(err);
             resolve();
         })

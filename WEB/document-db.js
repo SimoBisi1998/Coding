@@ -4,8 +4,8 @@ const db = require('./db.js');
 
 exports.postDocument = async(doc) => {
     return new Promise((resolve,reject) => {
-        const sql = 'INSERT INTO documento(id_progetto,titolo,descrizione,data,costo) VALUES (?,?,?,?,?)';
-        db.run(sql,[doc.project,doc.titolo,doc.descrizione,doc.data,doc.costo],function (err){
+        const sql = 'INSERT INTO documento(id_progetto,titolo,descrizione,data,costo,id_user,src) VALUES (?,?,?,?,?,?,?)';
+        db.run(sql,[doc.project,doc.titolo,doc.descrizione,doc.data,doc.costo,doc.id_user,doc.src],function (err){
             if(err) reject(err);
             resolve(this.lastID);
         })
@@ -24,8 +24,8 @@ exports.getDocs = async() => {
 
 exports.insertBuyDocument = async(idDocument,payment,idProject) => {
     return new Promise((resolve,reject) => {
-        const sql = 'INSERT INTO pagamento(id_pagamento,id_doc,nome,cognome,tipo,numero,CCV,id_progetto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        db.run(sql,[payment.id,idDocument,payment.nome,payment.cognome,payment.tipo,payment.numero,payment.CCV,idProject],(err) => {
+        const sql = 'INSERT INTO pagamento(id_doc,nome,cognome,tipo,numero,CCV,id_progetto,id_user) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        db.run(sql,[idDocument,payment.nome,payment.cognome,payment.tipo,payment.numero,payment.CCV,idProject,payment.userID],(err) => {
             if(err) reject(err);
             resolve(this.lastID);
         })
@@ -52,8 +52,21 @@ exports.deleteDocumentByID = async(idDocument) => {
     }).then(() => {
         this.deletePaymentByDocID(idDocument);
         this.deleteAllComments(idDocument);
+        this.deleteAllFavourites(idDocument);
     })
 }
+
+exports.deleteAllFavourites = async (idDocument) => {
+    return new Promise((resolve,reject) => {
+        const sql = "DELETE FROM preferiti WHERE id_documento = ?";
+        db.run(sql,[idDocument],(err) => {
+            if(err) reject(err);
+            resolve();
+        })
+    })
+}
+
+
 
 exports.deletePaymentByDocID = async(idDocument) => {
     return new Promise((resolve,reject) => {
@@ -85,10 +98,10 @@ exports.getFollowDoc = async() => {
     })
 }
 
-exports.removeFollowDoc = async(idDocument) => {
+exports.removeFollowDoc = async(idDocument,user) => {
     return new Promise((resolve,reject) => {
-        const sql = "DELETE FROM preferiti WHERE id_documento=?";
-        db.run(sql,[idDocument],(err)=> {
+        const sql = "DELETE FROM preferiti WHERE id_documento=? AND user_email = ?";
+        db.run(sql,[idDocument,user],(err)=> {
             if(err) reject(err);
             resolve();
         })
@@ -135,10 +148,10 @@ exports.updateComment = async(commento,id_commento) => {
     })
 }
 
-exports.updateDocument = async(doc) => {
+exports.updateDocument = async(doc,docID) => {
     return new Promise((resolve,reject) => {
-        const sql = "UPDATE documento SET titolo = ?, descrizione = ?, data = ?, costo = ? WHERE id_documento = ?";
-        db.run(sql,[doc.titolo,doc.descrizione,doc.data,doc.costo,doc.id_documento],(err) => {
+        const sql = "UPDATE documento SET titolo = ?, descrizione = ?, data = ?, costo = ?, id_progetto = ?, id_user = ?,src = ? WHERE id_documento = ?";
+        db.run(sql,[doc.titolo,doc.descrizione,doc.data,doc.costo,doc.project,doc.id_user,doc.src,docID],(err) => {
             if(err) reject(err);
             resolve();
         })
