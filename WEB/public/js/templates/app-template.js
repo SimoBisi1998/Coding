@@ -2,31 +2,38 @@
 
 
 function createEmptyApp() {
-    return `<h1>NON SONO STATI TROVATI PROGETTI</h1>`;
+    return `<div id="noproject"><h1>NON SONO STATI TROVATI PROGETTI</h1><div>`;
 }
 
 function createDonationMethod() {
     return `<div class="max-container">
+    <h1><u><i>Dati di Pagamento</i></u></h1>
+    <br><br><br>
     <form method="POST" action="" id="donation-form" class="col-6 mx-auto">
     <div class="form-group form-pagamenti">
       <label for="nome">Nome</label>
-      <input type="nome" name="nome" class="form-control" required />
+      <input type="nome" id="nome" name="nome" class="form-control" required />
     </div>
     <div class="form-group form-pagamenti">
       <label for="cognome">Cognome</label>
-      <input type="cognome" name="cognome" class="form-control" required />
+      <input type="cognome" id="cognome" name="cognome" class="form-control" required />
     </div>            
     <div class="form-group form-pagamenti">
-      <label for="email">Tipo</label>
-      <input type="tipo" name="tipo" class="form-control" required />
+      <label for="tipo">Metodo di Pagamento</label><br>
+      <select name="MetodoDiPagamento" id="tipo">
+        <option name="tipo" value="mastercard">Mastercard</option>
+        <option name="tipo" value="VISA">VISA</option>
+        <option name="tipo" value="Bancomat">Bancomat</option>
+      </select>
     </div>
+    <br>
     <div class="form-group form-pagamenti">
-      <label for="numero">Numero</label>
+      <label for="numero">Numero (16 cifre)</label>
       <input type="password" id="numero" name="numero" pattern=".{16}" title="Deve contenere 16 cifre." class="form-control" required />
     </div>
     <div class="form-group form-pagamenti">
-      <label for="CCV">CCV</label>
-      <input type="password" id="CCV" name="CCV" pattern=".{3}" title="3 cifre" class="form-control" required />
+      <label for="CCV">CCV (3 cifre)</label>
+      <input type="password" id="CCV" name="CCV" pattern=".{3}" title="Deve contenere 3 cifre" class="form-control" required />
     </div>
     <div class="form-group form-pagamenti">
       <label for="number">Importo</label>
@@ -34,36 +41,49 @@ function createDonationMethod() {
     </div>
     <div class="form-check">
   </div>
-    <button type="submit" id="register-button" class="btn btn-primary">Acquista</button>
+    <button type="submit" id="register-button" class="btn btn-primary">Dona</button>
   </form>
   </div>
     `;
 }
 
 function createPaymentDocument() {
-  return `<form method="POST" action="" id="payment-document" class="col-6 mx-auto">
-    <div class="form-group">
+  return `
+  <div class="max-container">
+  <h1><u><i>Dati di Pagamento</i></u></h1>
+  <br><br><br>
+  <form method="POST" action="" id="payment-document" class="col-6 mx-auto">
+    <div class="form-group form-pagamenti">
       <label for="nome">Nome</label>
-      <input type="nome" name="nome" class="form-control" required />
+      <input type="nome" id="nome" name="nome" class="form-control" required />
     </div>
-    <div class="form-group">
+    <div class="form-group form-pagamenti">
       <label for="cognome">Cognome</label>
-      <input type="cognome" name="cognome" class="form-control" required />
+      <input type="cognome" id="cognome" name="cognome" class="form-control" required />
     </div>            
-    <div class="form-group">
-      <label for="email">Tipo</label>
-      <input type="tipo" name="tipo" class="form-control" required />
+    <div class="form-group form-pagamenti">
+    <label for="tipo">Metodo di Pagamento</label><br>
+      <select name="MetodoDiPagamento" id="tipo">
+        <option name="tipo" value="mastercard">Mastercard</option>
+        <option name="tipo" value="VISA">VISA</option>
+        <option name="tipo" value="Bancomat">Bancomat</option>
+      </select>
+    </div><br>
+    <div class="form-group form-pagamenti">
+      <label for="numero">Numero (16 cifre)</label>
+      <input type="password" id="numero" name="numero" pattern=".{16}" title="Deve contenere 16 cifre." class="form-control" required />
     </div>
-    <div class="form-group">
-      <label for="numero">Numero</label>
-      <input type="password" name="numero" pattern=".{16}" title="Deve contenere 16 cifre." class="form-control" required />
+    <div class="form-group form-pagamenti">
+      <label for="CCV">CCV (3 cifre)</label>
+      <input type="password" id="CCV" name="CCV" pattern=".{3}" title="Deve contenere 3 cifre" class="form-control" required />
     </div>
-    <div class="form-group">
-      <label for="CCV">CCV</label>
-      <input type="password" name="CCV" pattern=".{3}" title="3 cifre" class="form-control" required />
+    <div class="form-group form-pagamenti">
+      <label for="number">Importo</label>
+      <input type="number" min="1" max="1000" name="importo" class="form-control" required />
     </div>
     <button type="submit" id="register-button" class="btn btn-primary">Acquista</button>
   </form>
+  </div>
     `;
 }
 

@@ -14,13 +14,14 @@ class Api {
             const user = await response.json();
             return user;
         }else {
+            const user = await response.json();
             throw user;
         }
     }
     
     static doRegister = async (email, password,nome,cognome,ruolo) => {
-        const correct  = await this.verifyRegister(email);
-        if(!correct.ok){
+        const correct  = await this.verifyAlreadyRegistered(email);
+        if(correct === false){
             let response = await fetch('/api/users', {
                 method: 'POST',
                 headers: {
@@ -41,7 +42,29 @@ class Api {
                 }
             }
         }
+        else {            
+            return false;
+        }
     }
+
+    static verifyAlreadyRegistered = async(email) => {
+        let response = await fetch('/users');
+        let check = false;
+        if(response.ok){
+            const users = await response.json();
+            for(const user of users) {
+                if(user.email === email) {
+                    return check=true;
+                }
+            }
+            return check;
+        }
+        else {
+            const users = await response.json();
+            throw users;
+        }
+    }
+
 
     static likeProject = async(idProject,user) => {
         let res = await fetch('/api/project/like', {
@@ -219,13 +242,13 @@ class Api {
         }
     }
 
-    static removeThisProject = async(idProject) => {
+    static removeThisProject = async(idProject,user) => {
         await fetch('/project/follow/:id',{
             method : 'DELETE',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify({idProject})
+            body : JSON.stringify({idProject,user})
         });
     }
 
@@ -464,13 +487,13 @@ class Api {
         }
     }
 
-    static removeFollowDoc = async(idDocument) => {
+    static removeFollowDoc = async(idDocument,user) => {
         let response = await fetch('/document/remove/follow',{
             method : 'DELETE',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify({idDocument})
+            body : JSON.stringify({idDocument,user})
         });
         if(response.ok){
             return;
@@ -494,13 +517,13 @@ class Api {
         }
     }
 
-    static updateDocument = async(doc) => {
+    static updateDocument = async(doc,docID) => {
         let response = await fetch('/api/document/modify',{
             method : 'PUT',
             headers : {
                 'Content-Type' : 'application/json'
             },
-            body : JSON.stringify({doc})
+            body : JSON.stringify({doc,docID})
         });
         if(response.ok){
             return;

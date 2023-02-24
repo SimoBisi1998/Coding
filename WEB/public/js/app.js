@@ -6,17 +6,17 @@ import Document from './document.js';
 import Payment from './payment.js';
 import Comment from './comment.js';
 import { createFormProject, createNewForm,createProjectHTML,projectPage,projectPageFinanziatore,createFollowProjectTemplate,addModifyButton,
-createListOfDonator,createListOfComment,deleteCommentButton ,createListOfDocuments,createExitForm, createCarrello, buyedDoc,createListOfDocumentsBought,
-deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm,commentFormNew,modifyDocument,formDoc,createModForm, 
-projectPageUndefined, imageFollowProject,starProject,likeProject,notLikeProject} from './templates/project-template.js';
+createListOfDonator,createListOfComment,deleteCommentButton ,createExitForm, createCarrello, buyedDoc,createListOfDocumentsBought,
+deleteDocumentButton, HTMLfollowDocument,followedDoc,documentPage, createListOfDocumentsPage,commentForm,commentFormNew,formDoc,createModForm, 
+projectPageUndefined, imageFollowProject,starProject,likeProject,notLikeProject, addNewModButton,createDocHTMLTemplate, createLinkToDownload} from './templates/project-template.js';
 import page from '//unpkg.com/page/page.mjs';
 import {createRegisterForm,createLoginForm,createLogoutForm,createSideNav} from './templates/login-template.js';
 import {createAlert} from './templates/alert-template.js';
 import {showAccount} from './templates/account-template.js';
 import {createEmptyApp,createDonationMethod, createPaymentDocument} from './templates/app-template.js';
 
-//risolvere delete cascade pagamento documento
-//finish
+//showOneProject vedere modifca/elimina quando logga un altro creatore diveso da quello che ha creato il progetto
+
 class App {
     constructor(navContainer,appContainer,searchContainer,navLeft) {
         this.appContainer = appContainer;
@@ -28,7 +28,7 @@ class App {
         this.copyApp = this.appContainer.innerHTML;
         this.copyNavbar = this.navContainer.innerHTML;
         this.copySearch = this.searchContainer.innerHTML;
-        let myhome = false;
+        this.myhome = false;
         
         //copia dell'init per ripristinare correttamente gli oggetti della pagina iniziale
 
@@ -39,7 +39,6 @@ class App {
         page('/signup', async() => {
             this.appContainer.innerHTML = '';
             this.navContainer.innerHTML = '';
-            this.secondAppContainer.innerHTML = '';
             this.onRegisterButtonSubmitted();
         });
 
@@ -61,12 +60,17 @@ class App {
             this.projectHandler();
         });
 
+        page('/document/follow/:id_documento',async(req) => {
+            await Api.removeFollowDoc(req.params.id_documento,this.user);
+            history.back();
+        })
+
         page('/project/:id',async(req) => {
             this.projectPageHandler(req);
         })
 
         page('/project/follow/:id',async(req) => {
-            await this.removeFollowProject(req.params.id);
+            this.removeFollowProject(req.params.id,this.user);
         })
 
         page('/api/comment/delete/:id_commento',(req) => {
@@ -114,9 +118,9 @@ class App {
             this.likeProject(req.params.id_progetto);
         })
 
-
         page();
     }
+
 
     likeProject = async(idProject) => {
         let alertMessage = document.getElementById('alert-message');
@@ -172,17 +176,22 @@ class App {
         await this.showOneProject(idProject);
         if(role!=='undefined'){
             if(role===true){
-                this.navContainer.innerHTML = addModifyButton();
-                this.verifyUserByProjectID(this.user,idProject); 
-                document.getElementById('elimina-progetto').addEventListener('click',async() => {
-                    this.deleteProject(idProject,this.user);
-                })
-                document.getElementById('modifica-progetto').addEventListener('click',async() => {
-                    this.modifyProject(idProject);
-                })
-                document.getElementById('crea-documento').addEventListener('click',async(event) => {
-                    this.createDoc(idProject);
-                });
+                let check = await this.verifyUserByProjectID(this.user,idProject); 
+                if(check === true) {
+                    this.navContainer.innerHTML = addModifyButton();
+                    document.getElementById('elimina-progetto').addEventListener('click',async() => {
+                        this.deleteProject(idProject,this.user);
+                    })
+                    document.getElementById('modifica-progetto').addEventListener('click',async() => {
+                        this.modifyProject(idProject);
+                    })
+                    document.getElementById('crea-documento').addEventListener('click',async(event) => {
+                        this.createDoc(idProject);
+                    });
+                }else{
+                    this.navContainer.innerHTML = addNewModButton();
+
+                }
             }
                 document.getElementById('my-account').addEventListener('click',() => {
                     page('/info');
@@ -190,8 +199,11 @@ class App {
                 document.getElementById('home').addEventListener('click',() => {
                     page('/home');
                 });
+                document.getElementById('defaultPage').addEventListener('click',this.onLogoutSubmitted);
                 document.getElementById('logout').addEventListener('click',this.onLogoutSubmitted); 
-            }
+        }
+
+        
     }
 
     /**Handler della pagina progetti per la route "page('/project')" contenente la lista di tutti i progetti
@@ -199,28 +211,38 @@ class App {
      */
     projectHandler = async() => {
         this.searchContainer.innerHTML = this.copySearch;
-            
         const role = await this.verifyUser(this.user);
         document.getElementById('search-form').addEventListener('submit',async(event) => {
-            this.showFilteredProjects(event,myhome);
+            this.showFilteredProjects(event,this.myhome);
         });
-        if(role) {
+        if(role === true) {
             this.navContainer.innerHTML = createFormProject();
             document.getElementById('project').addEventListener('click',() => {
                 this.onCreateProjectSubmitted(this.user)
             });
-        }else {
+            document.getElementById('logout').addEventListener('click',this.onLogoutSubmitted);
+            document.getElementById('my-account').addEventListener('click',() => {
+                page('/info');
+            })
+            document.getElementById('home').addEventListener('click',() => {
+                this.appContainer.innerHTML = '';
+                page('/home');
+            })     
+        }else if(role === false){
             this.navContainer.innerHTML = createNewForm();
+            document.getElementById('logout').addEventListener('click',this.onLogoutSubmitted);
+            document.getElementById('my-account').addEventListener('click',() => {
+                page('/info');
+            })
+            document.getElementById('home').addEventListener('click',() => {
+                this.appContainer.innerHTML = '';
+                page('/home');
+            })   
         }
-        document.getElementById('logout').addEventListener('click',this.onLogoutSubmitted);
-        document.getElementById('my-account').addEventListener('click',() => {
-            page('/info');
-        })
-        document.getElementById('home').addEventListener('click',() => {
-            this.appContainer.innerHTML = '';
-            page('/home');
-        })
-        this.projects = await this.showProject();        
+
+        document.getElementById('defaultPage').addEventListener('click',this.onLogoutSubmitted);
+        this.projects = this.showProject();
+
     }
 
     /**Handler per la route "page('/info')" per estrarre le informazioni dell'utente loggato
@@ -228,30 +250,43 @@ class App {
      */
 
     infoHandler = async() => {
+        this.navContainer.innerHTML = createLogoutForm();
         this.myAccount(this.user);
         this.searchContainer.innerHTML = this.copySearch;
         document.getElementById('home').addEventListener('click',() => {
             page('/home');
         })    
+        document.getElementById('logout').addEventListener('click',this.onLogoutSubmitted);
     }
 
     /**Handler per la home, per la route "page(/home)" che una volta loggato mostra i progetti seguiti
      * 
      */
     homeHandler() {
-        this.navContainer.innerHTML = '';
         this.appContainer.innerHTML = '';
         this.navContainer.innerHTML = createLogoutForm();
         this.navLeft.innerHTML = createSideNav();
         this.searchContainer.innerHTML = this.copySearch;
         this.showFollowProject(this.user);
+        let className = document.getElementById('set-button-invisible');
+        className.style.display = 'block';
         document.getElementById('my-account').addEventListener('click',() => {
             page('/info');
         });   
         document.getElementById('search-form').addEventListener('submit',async(event) => {
-            myhome = true;
-            this.showFilteredProjects(event,myhome);
+            this.myhome = true;
+            this.showFilteredProjects(event,this.myhome);
+            this.myhome = false;
         });
+        document.getElementById('investi').addEventListener('click',() => {
+            page('/project');
+        })
+        document.getElementById('defaultPage').addEventListener('click',this.onLogoutSubmitted);
+
+        document.getElementById('home').addEventListener('click',() => {
+            page('/home');
+        })
+        
         document.getElementById('logout').addEventListener('click',this.onLogoutSubmitted);
     }
 
@@ -260,23 +295,24 @@ class App {
      */
 
     homePageHandler = async() => {
+        this.navLeft.innerHTML = '';
+        this.appContainer.innerHTML = '';
         this.navContainer.innerHTML = this.copyNavbar;
         this.appContainer.innerHTML = this.showProject();
         this.searchContainer.innerHTML = this.copySearch;
-
+        let className = document.getElementById('set-button-invisible');
+        className.style.display = 'none';
         document.getElementById('signup').addEventListener('click',() => {
             page('/signup');
         });
         document.getElementById('login').addEventListener('click',() => {
             page('/login');
         });
-        document.getElementById('investi').addEventListener('click',() => {
-            page('/project');
-        })
         document.getElementById('search-form').addEventListener('submit',async(event) => {
             this.showFilteredProjects(event);
         });
         
+
     }
     /**Modifica documento 
 
@@ -287,6 +323,37 @@ class App {
     modifyDocument = async(docID) => {
         const alertMessage = document.getElementById('alert-message');
 
+        //CONTROLLO INPUT LATO CLIENT
+        //Query sugli input da controllare
+        //Per ogni elemento della lista, per ognuno di essi valuto il valore cliccato dall'utente 
+        //per evitare che vengano inseriti caratteri al posto di valori numeri
+        const list = document.querySelectorAll('#form-cost');
+        const arrayList = [...list];
+        arrayList.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9' || event.key === "Backspace") { //keyCode 9 => quando l'utente preme tab
+                    return event;
+                }else {
+                    event.preventDefault();
+                }
+            })
+        });
+
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#form-title,#form-description');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') {
+                    event.preventDefault();
+                }else {
+                    return event;
+                }
+            })
+        });
+        document.getElementById('close-modal').addEventListener('click',() => {
+            history.back();
+        })
         //creo i comandi di modifica e uscita dal form 
         const command = document.getElementById('command-form');
         command.innerHTML = createModForm();
@@ -298,18 +365,20 @@ class App {
                 const description = docForm.elements['form-description'].value;
                 const date = docForm.elements['form-date'].value;
                 let costo = docForm.elements['form-cost'].value;
+                const file = docForm.elements['form-pdf'].value;
 
+                //Splitto il valore di img per ottenere il riferimento all'immagine che è stata selezionata
+                let tmp = [];
+                tmp = file.split("\\");
+                tmp = tmp[2].split(".");
+
+                let userID = await Api.verifyRegister(this.user);
                 //creo l'oggetto doc
-                let doc = {
-                    id_documento : docID,
-                    titolo : title,
-                    descrizione : description,
-                    data : date,
-                    costo : costo
-                }
+                let doc = new Document(title,description,date,costo,tmp[0],localStorage.getItem('idProject'),userID)
 
                 //eseguo l'update del documento
-                await Api.updateDocument(doc);
+                await Api.updateDocument(doc,docID);
+                
                 //const doc = new Document(title,description,date,costo,idProject);
 
 
@@ -317,13 +386,13 @@ class App {
                 document.getElementById('close-modal').click();
 
     
-                alertMessage.innerHTML = createAlert('success','Documento aggiunto correttamente!');
+                alertMessage.innerHTML = createAlert('success','Documento modificato correttamente!');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
-                history.back();
+                //this.showOneProject(localStorage.getItem('idProject'))
             }catch(error) {
-                alertMessage.innerHTML = createAlert('danger','Documento non aggiunto.');
+                alertMessage.innerHTML = createAlert('danger','Documento non modificato.');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
@@ -380,15 +449,15 @@ class App {
     */
 
     showDocumentPage = async(docID) =>{
+        this.searchContainer.innerHTML = '';
         let form = commentForm();
         let role = await this.verifyUser(this.user);
-        if(role == true || role == 'undefined') {
+        if(role == 'undefined') {
             form="";
             this.appContainer.innerHTML = documentPage(form);
+        }else {
+            this.appContainer.innerHTML = documentPage(form);
         }
-        
-        this.appContainer.innerHTML = documentPage(form);
-
         //GET dei commenti dal db
         let comment = await Api.getComments();
 
@@ -402,13 +471,17 @@ class App {
             }
         }
 
-        //Se l'utente è un finanziatore, allora può commentare
-        if(role == false) {
+        //Se l'utente è un finanziatore/creatore, allora può commentare
+        if(role!== 'undefined') {
             document.getElementById('comment-button').addEventListener('click',async (event) => {
                 this.onCommentButtonSubmitted(event,docID);
             });
+            document.getElementById('home').addEventListener('click',() => {
+                page('/home');
+            });
+            
         }
-        
+       
         //Commenti
         comment.forEach((commento) => {
             if(commento.id_documento == docID && commento.id_user == this.user) {
@@ -430,9 +503,8 @@ class App {
      * @param {*} user 
      * @returns 
      */
-    followDocument = async(docID,user) => {
+    followDocument = async(docID,user) => {    
         let alertMessage = document.getElementById('alert-message');
-
         //GET dei documenti seguiti 
         let res = await Api.getFollowDoc();
         try {
@@ -442,7 +514,7 @@ class App {
                 if(follow.id_documento == docID && follow.user_email === user) {
                     document.getElementById('full-heart').innerHTML = HTMLfollowDocument();
                     //Eseguo la delete del follow del documento
-                    await Api.removeFollowDoc(docID);
+                    await Api.removeFollowDoc(docID,user);
                     alertMessage.innerHTML = createAlert('success','Documento tolto dai preferiti correttamente!');
                     setTimeout(() => {
                         alertMessage.innerHTML = '';
@@ -534,26 +606,71 @@ class App {
      * @param {*} idDocument 
      */
     buyDocument(idDocument) {
+         //CONTROLLO INPUT LATO CLIENT
+        //Query sugli input da controllare
+        //Per ogni elemento della lista, per ognuno di essi valuto il valore cliccato dall'utente 
+        //per evitare che vengano inseriti caratteri al posto di valori numeri
+        const list = document.querySelectorAll('#CCV,#numero');
+        const arrayList = [...list];
+        arrayList.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9' || event.key === "Backspace") { 
+                    return event;
+                }else {
+                    event.preventDefault();
+                }
+            })
+        });
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#nome,#cognome');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') { 
+                    event.preventDefault();
+                }else {
+                    return event;
+                }
+            })
+        });
         document.getElementById('payment-document').addEventListener('submit',async(event) => {
             event.preventDefault();
             const paymentForm = document.getElementById('payment-document');
             const alertMessage = document.getElementById('alert-message');
+            let e = document.getElementById("tipo");
+            let text = e.options[e.selectedIndex].text;
+            let userID = await Api.verifyRegister(this.user);
+            let documents = await Api.getDocuments();
+            let checkValue = false;
+            for(let doc of documents){
+                if(doc.id_documento == idDocument){
+                    if(paymentForm.importo.value >= doc.costo){
+                        checkValue = true;
+                    }
+                }
+            }
             try {
-                //Istanzio l'oggetto payment composto dai campi presi dal paymentForm
-                let payment = new Payment(paymentForm.nome.value,paymentForm.cognome.value,paymentForm.tipo.value,paymentForm.numero.value,paymentForm.CCV.value);
-                //Eseguo la POST
-                await Api.buyDocument(idDocument,payment,localStorage.getItem("idProject"));
-                alertMessage.innerHTML = createAlert('success','Pagamento avvenuto con successo!');
-                setTimeout(() => {
-                    alertMessage.innerHTML = '';
-                },3000);
-                history.back();
+                if(checkValue === true) {
+                    //Istanzio l'oggetto payment composto dai campi presi dal paymentForm
+                    let payment = new Payment(paymentForm.nome.value,paymentForm.cognome.value,text,paymentForm.numero.value,paymentForm.CCV.value,userID);
+                    //Eseguo la POST
+                    await Api.buyDocument(idDocument,payment,localStorage.getItem("idProject"));
+                    alertMessage.innerHTML = createAlert('success','Pagamento avvenuto con successo!');
+                    setTimeout(() => {
+                        alertMessage.innerHTML = '';
+                    },3000);
+                    history.back();
+                }else {
+                    alertMessage.innerHTML = createAlert('danger',"L'importo inserito non è sufficiente.");
+                    setTimeout(() => {
+                        alertMessage.innerHTML = '';
+                    },3000);
+                }           
             }catch(error) {
-                alertMessage.innerHTML = createAlert('danger','Acquisto non avvenuto!');
+                alertMessage.innerHTML = createAlert('danger','Dati nel formato sbagliato!');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
-                history.back();
                 throw error;
             }
         })
@@ -570,11 +687,37 @@ class App {
     createDoc = async(idProject) => {
         const alertMessage = document.getElementById('alert-message');
 
-        const value = document.getElementById('defaultCheck');
-        const element = document.getElementById('input-box');
+
+        //CONTROLLO INPUT LATO CLIENT
+        //Query sugli input da controllare
+        //Per ogni elemento della lista, per ognuno di essi valuto il valore cliccato dall'utente 
+        //per evitare che vengano inseriti caratteri al posto di valori numeri
+        const list = document.querySelectorAll('#form-cost');
+        const arrayList = [...list];
+        arrayList.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9' || event.key === "Backspace") { //keyCode 9 => quando l'utente preme tab
+                    return event;
+                }else {
+                    event.preventDefault();
+                }
+            })
+        });
+
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#form-title,#form-description');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') {
+                    event.preventDefault();
+                }else {
+                    return event;
+                }
+            })
+        });
         const command = document.getElementById('command-form');
         command.innerHTML = createExitForm();
-
         //Viene effettuato il submit del form
         document.getElementById('submit-doc').addEventListener('click',async(event) => {
             event.preventDefault();
@@ -584,9 +727,16 @@ class App {
                 const description = docForm.elements['form-description'].value;
                 const date = docForm.elements['form-date'].value;
                 let costo = docForm.elements['form-cost'].value;
+                const file = docForm.elements['form-pdf'].value;
 
+                //Splitto il valore di img per ottenere il riferimento all'immagine che è stata selezionata
+                let tmp = [];
+                tmp = file.split("\\");
+                tmp = tmp[2].split(".");
+                
+                let userID = await Api.verifyRegister(this.user)
                 //Istanzio l'oggetto doc della classe Document
-                const doc = new Document(title,description,date,costo,idProject);
+                const doc = new Document(title,description,date,costo,tmp[0],idProject,userID);
                 
                 //Eseguo la POST
                 let docID = await Api.postDocument(doc);
@@ -599,13 +749,12 @@ class App {
                 },3000);
 
                 this.showOneProject(idProject)
-                //this.showDocuments(doc,docID);
             }catch(error) {
                 alertMessage.innerHTML = createAlert('danger','Documento non aggiunto.');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
-                history.back();
+                
                 throw error;
             }
         })
@@ -698,10 +847,23 @@ class App {
         const arrayList = [...list];
         arrayList.forEach(element => {
             element.addEventListener("keydown", (event) => {
-                if (event.key >= '0' && event.key<='9' || event.key === 'Backspace' || event.keyCode == 9) { //keyCode 9 => quando l'utente preme tab
+                if (event.key >= '0' && event.key<='9' || event.key === "Backspace") {
                     return event;
                 }else {
                     event.preventDefault();
+                }
+            })
+        });
+
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#nome,#cognome');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') { 
+                    event.preventDefault();
+                }else {
+                    return event;
                 }
             })
         });
@@ -711,21 +873,22 @@ class App {
             event.preventDefault();
             const donationForm = document.getElementById('donation-form');
             const alertMessage = document.getElementById('alert-message');
+            let e = document.getElementById("tipo");
+            let text = e.options[e.selectedIndex].text;
             try {
                 //Eseguo la post della donazione
-                await Api.projectDonation(this.user,idProject,donationForm.nome.value,donationForm.cognome.value,donationForm.tipo.value,donationForm.numero.value,donationForm.CCV.value,donationForm.importo.value);
+                await Api.projectDonation(this.user,idProject,donationForm.nome.value,donationForm.cognome.value,text,donationForm.numero.value,donationForm.CCV.value,donationForm.importo.value);
                 alertMessage.innerHTML = createAlert('success','Donazione avvenuta con successo!');
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
                 },3000);
-                await this.showOneProject(idProject);
+                //this.showOneProject(idProject);
                 history.back();
             }catch(error) {
-                alertMessage.innerHTML = createAlert('danger','Donazione non avvenuta!');
+                alertMessage.innerHTML = createAlert('danger',`Hai inserito dei dati nel formato sbagliato,controlla!`);
                 setTimeout(() => {
                     alertMessage.innerHTML = '';
-                },3000);
-                history.back();
+                },3000);          
                 throw error;
             }
         })
@@ -747,6 +910,18 @@ class App {
      */
 
     modifyProject(idProject) {
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#mod-title,#mod-description,#mod-author,#mod-category');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') {
+                    event.preventDefault();
+                }else {
+                    return event;
+                }
+            })
+        });
         const command = document.getElementById('modify-template-form');
         command.innerHTML = createModForm();
 
@@ -768,11 +943,8 @@ class App {
             let tmp = [];
             tmp = img.split("\\");
             tmp = tmp[2].split(".");
-    
 
             const project = new Project(userID,title,description,author,category,tmp[0]);
-            
-            
 
             try {
                 //Eseguo la PUT dei nuovi valori 
@@ -804,6 +976,13 @@ class App {
     showFollowProject = async(user) => {
         //GET dei progetti seguiti dall'utente loggato
         let followProjects = await Api.getFollowProject(user);
+
+        //GET follow documents
+        let docs = await Api.getFollowDoc();
+
+        //GET all documents
+        let documents = await Api.getDocuments();
+
         //Se la lista è vuota,stampo un messaggio di notifica
         if(followProjects.length === 0) {
             this.appContainer.innerHTML = createEmptyApp();
@@ -814,6 +993,14 @@ class App {
         for(let project of followProjects) {
             this.appContainer.innerHTML += createFollowProjectTemplate(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.image);
         }
+        for(let d of documents) {
+            for(let doc of docs){
+                if(doc.id_documento == d.id_documento && doc.user_email == user){
+                    this.appContainer.insertAdjacentHTML('beforeend', createDocHTMLTemplate(d.id_documento, d.titolo, d.descrizione, d.data));
+                }          
+            }
+        }
+
 
     }
 
@@ -832,7 +1019,7 @@ class App {
             for(let follow of res) {
                 if(follow.id == idProject) {
                     document.getElementById('star-project').innerHTML = imageFollowProject();
-                    await Api.removeThisProject(idProject);
+                    await Api.removeThisProject(idProject,username);
                     alertMessage.innerHTML = createAlert('success','Progetto tolto dai preferiti correttamente!');
                     setTimeout(() => {
                         alertMessage.innerHTML = '';
@@ -863,9 +1050,9 @@ class App {
      * @param {*} idProject 
      */
 
-    removeFollowProject = async(idProject) => {
+    removeFollowProject = async(idProject,user) => {
         try {
-            await Api.removeThisProject(idProject);
+            await Api.removeThisProject(idProject,user);
             page.redirect('/home');
         }catch(error){
             history.back();
@@ -947,12 +1134,21 @@ class App {
                 //Se è un creatore
                 if(ruolo==true) {
                     favourites = starProject(proj.id);
+                    like = notLikeProject(proj.id);
                     for(let fproj of followProj){
                         if(fproj.id == proj.id) {
                             favourites = imageFollowProject(proj.id);
                         }
                     }
-                    this.appContainer.innerHTML = projectPage(proj.id,proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,proj.immagine,favourites);
+                    for(let like of likesProject){
+                        if(like.id_progetto == proj.id && this.user == like.user_email) {
+                            checkLike = true;
+                        }
+                    }
+                    if(checkLike){
+                        like = likeProject(proj.id);
+                    } 
+                    this.appContainer.innerHTML = projectPage(proj.id,proj.titolo,proj.descrizione,proj.autore,proj.categoria,totalDonations,proj.immagine,favourites,like);
                 //SE è un finanziatore
                 }else if(ruolo==false){
                     favourites = starProject(proj.id);
@@ -985,9 +1181,14 @@ class App {
                 }
             
                 let pay = [];
+                let arrayIdUser = [];
                 payment.forEach((paym) => {
                     pay.push(paym.id_doc);
+                    arrayIdUser[paym.id_doc] = paym.id_user;
                 })
+
+                let resultProject = await this.verifyUserByProjectID(this.user,localStorage.getItem('idProject'));
+                let userID = await Api.verifyRegister(this.user);
 
                 if(this.user == 'undefined') {
                     documents.forEach((doc) => {
@@ -997,7 +1198,7 @@ class App {
                             doc.costo = "Gratis";
                             symbol = "";
                         }
-                        document.getElementById('documents-table').innerHTML += createListOfDocuments(doc.id_documento,doc.titolo,doc.descrizione,doc.data,doc.costo,symbol,"","","","",ruolo);
+                        document.getElementById('documents-table').innerHTML += createListOfDocuments(doc.id_documento,doc.titolo,doc.descrizione,doc.data,doc.costo,symbol,"","","","",ruolo,doc.src);
                         }
                     })
                 }else {
@@ -1005,62 +1206,54 @@ class App {
                         let basket = "";
                         let heart = "";
                         let modify = "";
+                        let shop="";
+                        let newValue = "";
                         documents.forEach(async(doc) => {
                             if(doc.id_progetto == id){
-                                if(pay.includes(doc.id_documento)){
-                                    let shop = buyedDoc();
-                                    heart = HTMLfollowDocument();
-                                    let value = doc.costo;
-                                    let symbol = "€"
-                                    basket = "";
-                                    modify = "";
-                                    if(await this.verifyUserByProjectID(this.user,localStorage.getItem('idProject')) === true) {
-                                        basket = deleteDocumentButton(doc.id_documento);
-                                        modify = formDoc();
-                                    }
-                                    for(let follow of followDoc){
-                                        if(follow.id_documento == doc.id_documento && this.user == follow.user_email) {
-                                            heart = followedDoc();
-                                            
-                                        }
-                                    }
-                                    
-                                    document.getElementById('documents-table').innerHTML += createListOfDocumentsBought(doc.id_documento,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,modify,heart,ruolo);
+                                if(arrayIdUser[doc.id_documento] === userID && pay.includes(doc.id_documento)){
+                                    shop = buyedDoc();
+                                    newValue = createLinkToDownload(doc.src);
                                 }else {
-                                    let checkFollow = false;
-                                    let shop = createCarrello();
-                                    let value = doc.costo;
-                                    let symbol = "€"
-                                    basket = "";
-                                    heart = "";
-                                    if(doc.costo == 0) {
-                                        value = "Gratis";
-                                        symbol = "";
-                                        shop = "";
-                                    }
-                                    if(await this.verifyUserByProjectID(this.user,localStorage.getItem('idProject')) === true) {
-                                        basket = deleteDocumentButton(doc.id_documento);
-                                        modify = formDoc();
-                                        
-                                    }else {
-                                        if(ruolo!=='undefined'){
-                                            let ruoloUser = await Api.getInfo(this.user);
-                                            if(ruoloUser.ruolo === 'finanziatore') {
-                                                heart = HTMLfollowDocument();
-                                            }
-                                        }
-                                    }
-                                    for(let follow of followDoc){
-                                        if(follow.id_documento == doc.id_documento && this.user == follow.user_email) {
-                                            heart = followedDoc();
-                                            checkFollow = true;
-                                        }
-                                    }
-                                    
-                                    document.getElementById('documents-table').innerHTML += createListOfDocuments(doc.id_documento,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,heart,modify,ruolo);
+                                    shop = createCarrello(doc.id_documento);
+                                    newValue="";
                                 }
-                            }   
-                        })
+                                let value = doc.costo;
+                                let checkFollowBought = false;
+                                let symbol = "€"
+                                if(doc.costo == 0) {
+                                    value = "Gratis";
+                                    symbol = "";
+                                    shop = "";
+                                }
+                                basket = "";
+                                if(resultProject=== true) {
+                                    basket = deleteDocumentButton(doc.id_documento);
+                                    modify = formDoc(doc.id_documento);
+                                }else{
+                                    if(ruolo!=='undefined'){
+                                        checkFollowBought = false;
+                                    }    
+                                }
+                                for(let follow of followDoc){
+                                    if(follow.id_documento == doc.id_documento && this.user == follow.user_email) {
+                                        checkFollowBought = true;
+                                    }
+                                }
+                                if(doc.id_user !== userID){
+                                    modify = "";
+                                    basket = "";
+                                }
+                                if(checkFollowBought === true){
+                                    heart = followedDoc(doc.id_documento);
+                                }else {
+                                    heart = HTMLfollowDocument(doc.id_documento);
+                                }
+                                if(value ==="Gratis"){
+                                    newValue = createLinkToDownload(doc.src);
+                                }
+                                document.getElementById('documents-table').innerHTML += createListOfDocumentsBought(doc.id_documento,doc.titolo,doc.descrizione,doc.data,value,symbol,shop,basket,modify,heart,ruolo,doc.src,newValue);
+                            }
+                        })   
                 }
                 
             }
@@ -1091,6 +1284,27 @@ class App {
      */
     onRegisterButtonSubmitted = async() =>  {
         this.appContainer.innerHTML = createRegisterForm();
+        this.navContainer.innerHTML = this.copyNavbar;
+        document.getElementById('login').addEventListener('click',() => {
+            page('/login');
+        });
+        document.getElementById('signup').addEventListener('click',() => {
+            page('/signup');
+        });
+        this.searchContainer.innerHTML = '';
+
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#nome,#cognome');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') { //keyCode 9 => quando l'utente preme tab
+                    event.preventDefault();
+                }else {
+                    return event;
+                }
+            })
+        });
         //Submit del form
         document.getElementById('signup-form').addEventListener('submit',async (event) => {
             event.preventDefault();
@@ -1103,6 +1317,14 @@ class App {
             try {
                 //Registra l'utente
                 const user = await Api.doRegister(form.email.value,form.password.value,form.nome.value,form.cognome.value,ruolo);
+                if(user === false){
+                    alert.innerHTML = createAlert('danger','Utente già registrato! ')
+                    setTimeout(() => {
+                        alert.innerHTML = '';
+                    },3000);
+                    page('/signup')
+                    return;
+                }
                 alert.innerHTML = createAlert('success',`Benvenuto ${user}`);
                 setTimeout(() => {
                     alert.innerHTML = '';
@@ -1114,7 +1336,7 @@ class App {
                 setTimeout(() => {
                     alert.innerHTML = '';
                 },3000);
-                history.back();
+                page('/signup')
                 throw error;
             }
     });
@@ -1144,7 +1366,7 @@ class App {
                 setTimeout(() => {
                     alert.innerHTML = '';
                 },3000);
-                history.back();
+                page.redirect('/login')
                 throw error;
             }
         })
@@ -1155,6 +1377,18 @@ class App {
      * @param {*} user 
      */
     onCreateProjectSubmitted = async(user) =>  {
+        //Stesso controllo precedente,ma per type text quindi non è possibile inserire numeri al posto di caratteri
+        const list2 = document.querySelectorAll('#form-title,#form-description,#form-author,#form-category');
+        const arrayList2 = [...list2];
+        arrayList2.forEach(element => {
+            element.addEventListener("keydown", (event) => {
+                if (event.key >= '0' && event.key<='9') { //keyCode 9 => quando l'utente preme tab
+                    event.preventDefault();
+                }else {
+                    return event;
+                }
+            })
+        });
         //Submit del form
         document.getElementById('add-form-button').addEventListener('click',async(event) => {
             event.preventDefault();
@@ -1186,7 +1420,7 @@ class App {
                 },3000);
                 page('/project');
                 return;
-                }catch(error) {
+            }catch(error) {
                     alert.innerHTML = createAlert('danger',`Il progetto ${title} non è stato creato.`);
                     setTimeout(() => {
                         alert.innerHTML = '';
@@ -1203,33 +1437,26 @@ class App {
      */
     showProject = async() => {
         const projects = await Api.getProjects();
-        this.appContainer.innerHTML = ''; 
         let result = await Api.getProjectByLike();
         let arrayLike = [];
         for(let x of result){
             arrayLike.push(x);
         }
-        let i = 0;
-        let check = false;
-        //Per ogni progetto,controllo se l'index appartiene all'insieme dei progetti con dei like (arrayLike)
-        for(let project of projects){
-            //Se undefined vuol dire che non è presente
-            if(arrayLike[i] == undefined) {
-                check = true;
-            }
-            if(check == false){
-                if(arrayLike.indexOf(project.id)){
-                    let x = arrayLike[i].numberLikes;
-                    this.appContainer.insertAdjacentHTML('beforeend',createProjectHTML(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.immagine,x));
-                }
-            }else {
-                let x = 0
-                this.appContainer.insertAdjacentHTML('beforeend',createProjectHTML(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.immagine,x));
-            }
-            
-            i++;
+        let newArray = [];
+
+        //Per ogni coppia{idProject,numberLikes} vado ad allocare l'array con le rispettive posizioni in cui inserisco il numero di likes, dove in ogni cella avrò il numero di like di quel progetto
+        for(let x of arrayLike){
+            newArray[x.idProject] = x.numberLikes;
         }
-        
+
+        this.appContainer.innerHTML = "";
+        for(let project of projects){
+            //SE undefined, quindi vuol dire che non ci sono likes, allora metto 0
+            if(newArray[project.id] == undefined) {
+                newArray[project.id] = 0;
+            }
+            this.appContainer.insertAdjacentHTML('beforeend',createProjectHTML(project.titolo,project.descrizione,project.autore,project.categoria,project.id,project.immagine,newArray[project.id]));
+        }
         return projects;
     }
 
@@ -1269,6 +1496,7 @@ class App {
     showFilteredProjects = async(event,myhome) => {
         let progetto = false;
         let documento = false;
+        
         //Se viene inserito un valore nella prima barra di ricerca,allora fa riferimento alla categoria e perciò ai progetti
         if(document.getElementById('search-titolo').checked == true && document.getElementById('search-documento').checked == false) {
             //Setto progetto a true
@@ -1282,6 +1510,7 @@ class App {
         if(document.getElementById('search-documento').checked == true && document.getElementById('search-titolo').checked == true){
             both = true;
         }
+        
         //Chiamo la selectFilter in project
         await Project.selectFilter(event,this.user,progetto,documento,this.appContainer,myhome);
     }
