@@ -4,12 +4,14 @@
     padding: 5px;
 }
 
+
 footer {
     text-align: center;
     width: 100%;
     position: fixed;
     bottom: 0;
 }
+
 #nav-doc {
     text-align: center;
     margin-top: 150px;
@@ -17,7 +19,6 @@ footer {
     height: 150px;
     position: fixed;
 }
-
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -80,15 +81,19 @@ th, td {
 }
 
 .box-container {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     padding-inline: 20px;
+    word-wrap: break-word;
 }
 
 .new-box-container {
     margin-top: 50px;
     display: inline-block;
-    margin : 0 auto;
-    margin-inline: 110px;
+    margin: 0 50px;
 }
 .block1 h2 {
     color: #333333;
@@ -111,7 +116,7 @@ th, td {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 450px;
+    width: 380px;
     background: #faf9f9;
     text-align: center;
     border-radius: 25px;
@@ -131,6 +136,10 @@ th, td {
     padding: 5px;
 }
 
+h1{
+    font-size: 60px;
+}
+
 .max-container {
     display: flex;
     flex-direction: column;
@@ -140,11 +149,12 @@ th, td {
 }
 
 .form-pagamenti {
-    font-size: 20px;
-    font-weight:500;
-    width: 300px;
-    height: 100px;
+    font-size: 30px;
+    font-weight:700;
+    width: 350px;
+    height: 120px;
 }
+
 #register-button{
     padding: 10px 20px;
     background-color: #4CAF50;
@@ -208,7 +218,7 @@ svg {
 }
 
 hr{
-    width: 40vh;
+    width: 30vh;
 }
 
 
@@ -240,6 +250,7 @@ hr{
     margin-right: auto;
 }
 
+
 .dim {
     padding: 10px;
     margin-left: 30px;
@@ -249,9 +260,14 @@ hr{
     display: none;
 }
 
-#login-form {
+#set-button-invisible {
+    display: none;
+}
+
+.login-form {
     display: inline;
 }
+
 
 .list {
     display: flex;
@@ -322,8 +338,16 @@ header {
     font-size: 40px;
 }
 
-h1 {
+#email,#password {
+    color: white;
+}
+
+#noproject {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    height: 50vh;
 }
 
 .sostieni-button{

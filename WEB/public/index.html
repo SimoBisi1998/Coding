@@ -17,18 +17,17 @@
         <nav class="navbar navbar-expand-lg bg-light navbar-dark bg-dark">
             <div class="container-fluid">
                 <img id="logo" src="images/logo.png">
-                <a class="navbar-brand" href="/">CrowdFunding</a>
+                <a class="navbar-brand" id="defaultPage" href="/">CrowdFounding</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page">Raccogli</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="investi">Investi</a>
-                        </li>
+                        <div id="set-button-invisible">
+                            <li class="nav-item">
+                                <a class="nav-link" id="investi">Investi</a>
+                            </li>
+                        </div>
                         <li class="nav-item" id="create-project">
 
                         </li>
@@ -39,6 +38,8 @@
                     <button type="submit" class="btn btn-outline-success signup" id="signup">Registrati</button>
                 </div>
             </div>
+            <div>
+            </div>
           </nav>
 
         <!-- alert message-->
@@ -48,7 +49,7 @@
         <div class="search" id="search-bar">
             <form class="d-flex" id="search-form" role="search">
                 <input class="form-control me-2" id="form-value" type="search" placeholder="Categoria..." aria-label="Search">
-                <input class="form-control me-2" id="second-form-value" type="search-form" placeholder="Cerca.." aria-label="Search">
+                <input class="form-control me-2" id="second-form-value" type="search-form" placeholder="Titolo o descrizione.." aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Ricerca</button>
             </form>
 
@@ -62,7 +63,8 @@
         </div>
 
         
-        <nav id="nav-container"></nav>
+        <nav id="nav-container">
+        </nav>
         
         <div class="box-container" id="first-container">
             
