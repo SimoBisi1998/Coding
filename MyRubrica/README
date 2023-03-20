@@ -1,4 +1,4 @@
-Web APP built in React.js(front-end),Node.js(back-end) with authentication token based with JWT(Json Web Token).
+Web APP built in React.js(front-end),Node.js(back-end) with authentication token based using JWT(Json Web Token).
 
 Ho sviluppato una Rubrica dove è possibile inserire,modificare,eliminare e ricercare un contatto in React.js (primo utilizzo di react) 
 per la parte front-end.
