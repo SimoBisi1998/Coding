@@ -1,0 +1,208 @@
+giu 24, 2023 5:24:41 PM com.example.archiver.Application main
+INFORMAZIONI: SPRING_APPLICATION STARTED ✓
+giu 24, 2023 5:24:41 PM com.example.archiver.Application main
+INFORMAZIONI: ARCHIVER_SUBSCRIBER STARTED ✓
+giu 24, 2023 5:25:22 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:25:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:25:28 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: MqttException
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: MqttException
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:36 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:37 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:39 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:26:40 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:28:54 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:28:57 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:29:21 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:14 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:17 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:19 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:20 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:23 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:26 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:29 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:32 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:35 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:38 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:41 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:44 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:50 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:52 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:53 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:30:55 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:32:13 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:32:21 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:32:32 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:32:35 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:32:38 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:33:02 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:33:02 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:35:47 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:35:50 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:35:53 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:35:56 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:35:59 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:20 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:23 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:28 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:30 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:33 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:35 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:38 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:36:40 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:37:19 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:15 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:18 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:20 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:23 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:27 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:30 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:30 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:32 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:33 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:35 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:36 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:37 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:39 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:42 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:44 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:46 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:46 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:46 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:49 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:49 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:51 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:52 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:54 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:55 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:56 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:58 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:38:58 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:01 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:03 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:36 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:36 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:38 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:41 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:42 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:45 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:48 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:51 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:54 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:39:57 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:42:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:42:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:42:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:42:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:42:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓
+giu 24, 2023 5:42:25 PM com.example.archiver.Publisher <init>
+INFORMAZIONI: ARCHIVER_PUBLISHER STARTED ✓

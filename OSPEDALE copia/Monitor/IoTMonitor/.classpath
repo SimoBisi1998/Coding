@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/simobisi/.m2/repository/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.5/org.eclipse.paho.client.mqttv3-1.2.5.jar" sourcepath="/Users/simobisi/.m2/repository/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.2.5/org.eclipse.paho.client.mqttv3-1.2.5-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.eclipse.paho"/>
+			<attribute name="maven.artifactId" value="org.eclipse.paho.client.mqttv3"/>
+			<attribute name="maven.version" value="1.2.5"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/simobisi/Downloads/java-json.jar"/>
+	<classpathentry kind="lib" path="/Users/simobisi/Downloads/util-logging_2.9.2-6.3.6.jar"/>
+	<classpathentry kind="lib" path="/Users/simobisi/Downloads/NewJar.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
