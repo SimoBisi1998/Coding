@@ -1,1 +1,0 @@
-{"Frequenza Cardiaca ":70,"Pressione Arteriosa ":15,"Frequenza Respiratoria ":90,"Dolore ":10,"Pressione Sanguigna ":17,"Stato di Coscienza ":40}

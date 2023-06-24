@@ -1,6 +1,0 @@
-Pressione Arteriosa : 85
-Frequenza Cardiaca : 24
-Frequenza Respiratoria : 16
-Saturazione Ossigeno : 45
-Stato di Coscienza : 70
-Dolore : 0
