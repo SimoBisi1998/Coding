@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-16"?>
+<Controller xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<Unit Id="MAS" IpAddress="172.17.5.2" />
+	<Unit Id="2MA" IpAddress="172.17.5.2" />
+	<Unit Id="3MA" IpAddress="172.17.5.3" />
+	<Unit Id="4MA" IpAddress="172.17.5.4" />
+	<Unit Id="5MA" IpAddress="172.17.5.5" />
+	<Unit Id="6MA" IpAddress="172.17.5.6" />
+	<Unit Id="1UW" IpAddress="172.17.5.31" />
+	<Unit Id="2UW" IpAddress="172.17.5.32" />
+	<Unit Id="3UW" IpAddress="172.17.5.33" />
+	<Unit Id="4UW" IpAddress="172.17.5.34" />
+	<Unit Id="5UW" IpAddress="172.17.5.35" />
+	<Unit Id="6UW" IpAddress="172.17.5.36" />
+	<Unit Id="REW" IpAddress="172.17.5.37" />
+	<Unit Id="2RW" IpAddress="172.17.5.38" />
+	<Unit Id="01S" IpAddress="172.17.5.11" />
+	<Unit Id="02S" IpAddress="172.17.5.12" />			
+	<Unit Id="03S" IpAddress="172.17.5.13" />
+	<Unit Id="04S" IpAddress="172.17.5.14" />
+	<Unit Id="05S" IpAddress="172.17.5.15" />
+	<Unit Id="06S" IpAddress="172.17.5.16" />
+	<Unit Id="08S" IpAddress="172.17.5.18" />
+	<Unit Id="09S" IpAddress="172.17.5.19" />			
+	<Unit Id="11S" IpAddress="172.17.5.21" />			
+	<Unit Id="12S" IpAddress="172.17.5.22" />
+	<Unit Id="07S" IpAddress="172.17.5.17" />
+	<Unit Id="10S" IpAddress="172.17.5.20" />			
+	<Unit Id="03T" IpAddress="" />
+	<Unit Id="04T" IpAddress="" />
+	<Unit Id="05T" IpAddress="" />
+	<Unit Id="06T" IpAddress="" />
+	<Unit Id="07T" IpAddress="" />
+	<Unit Id="1EX" IpAddress="" />
+	<Unit Id="2EX" IpAddress="" />
+	<Unit Id="1LL" IpAddress="172.17.5.100" />
+	<Unit Id="2LL" IpAddress="" />
+</Controller>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-16"?>
+<CPUList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<PLC id="MAS" ipAddress="172.17.5.2" />
+	<PLC id="01S" ipAddress="172.17.5.11" />
+	<PLC id="02S" ipAddress="172.17.5.12" />
+	<PLC id="03S" ipAddress="172.17.5.13" />
+	<PLC id="04S" ipAddress="172.17.5.14" />
+	<PLC id="05S" ipAddress="172.17.5.15" />
+	<PLC id="06S" ipAddress="172.17.5.16" />
+	<PLC id="07S" ipAddress="172.17.5.17" />
+	<PLC id="08S" ipAddress="172.17.5.18" />
+	<PLC id="09S" ipAddress="172.17.5.19" />
+	<PLC id="10S" ipAddress="172.17.5.20" />
+	<PLC id="1UW" ipAddress="172.17.5.31" />
+	<PLC id="REW" ipAddress="172.17.5.37" />
+</CPUList>

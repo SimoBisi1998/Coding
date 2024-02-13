@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.33026.149
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewDATester", "NewDATester\NewDATester.csproj", "{48B9E0F1-1B90-4EDF-9193-0BE906AB011B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "IBHDATester", "IBHDATester\IBHDATester.vdproj", "{3E43CB25-68F0-486F-A1E9-643786D57C94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48B9E0F1-1B90-4EDF-9193-0BE906AB011B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48B9E0F1-1B90-4EDF-9193-0BE906AB011B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48B9E0F1-1B90-4EDF-9193-0BE906AB011B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48B9E0F1-1B90-4EDF-9193-0BE906AB011B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E43CB25-68F0-486F-A1E9-643786D57C94}.Debug|Any CPU.ActiveCfg = Debug
+		{3E43CB25-68F0-486F-A1E9-643786D57C94}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AF8D748-4A57-4B5B-A9E8-51A1F03D6354}
+	EndGlobalSection
+EndGlobal
