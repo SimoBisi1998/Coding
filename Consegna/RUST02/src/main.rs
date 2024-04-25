@@ -5,6 +5,73 @@ pub struct Razionali{
     pub denum : i32
 }
 
+
+pub trait Add<Rhs = Self> {
+    type Output;
+    fn add(self,other : Rhs) -> Self::Output;
+}
+
+impl Add<i32> for Razionali{
+    type Output = Razionali;
+
+    fn add(self,other : i32) -> Self::Output {
+        let mcm = self.mcm(&Razionali::new(other,1));
+        
+        let first = (mcm/self.denum)*self.num;
+        let second = mcm*other;
+
+        Razionali {
+            num : first+second,
+            denum : mcm
+        }   
+    }
+}
+
+impl Add for Razionali {
+    type Output = Razionali;
+
+    fn add(self,other : Self) -> Self::Output {
+        let mcm = self.mcm(&other);
+        
+        let first = (mcm/self.denum)*self.num;
+        let second = (mcm/other.denum)*other.num;
+
+        Razionali {
+            num : first+second,
+            denum : mcm
+        }  
+    }
+}
+
+
+pub trait Mul<Rhs = Self> {
+	type Output;
+	fn mul(self, other: Rhs) -> Self::Output;
+}
+
+impl Mul<i32> for Razionali{
+    type Output = Razionali;
+
+    fn mul(self, rhs: i32) -> Self::Output {
+        Razionali {
+            num : self.num*rhs,
+            denum : self.denum
+        }
+    }
+}
+
+impl Mul for Razionali{
+    type Output = Razionali;
+    
+    fn mul(self, other: Self) -> Self::Output {
+        Razionali {
+            num : self.num*other.num,
+            denum : self.denum*other.denum
+        }
+    }
+}
+
+
 impl Razionali {
 
     /// Crea una nuova istanza di Razionali
@@ -137,7 +204,7 @@ impl Razionali {
 
 #[cfg(test)]
 mod test{
-    use crate::Razionali;
+    use crate::{Razionali, Mul, Add};
 
 
     #[test]
@@ -163,13 +230,37 @@ mod test{
 
    #[test]
     fn testMcm() {
-        assert_eq!(21,Razionali::mcm(&Razionali::new(2,3),&Razionali::new(8,9)));
+        assert_eq!(9,Razionali::mcm(&Razionali::new(2,3),&Razionali::new(8,9)));
+        assert_eq!(15,Razionali::mcm(&Razionali::new(3,5),&Razionali::new(4,3)));
     }
 
     #[test]
     fn test_somma() {
         assert_eq!(Razionali::new(5,3),Razionali::somma(Razionali::new(2,3),Razionali::new(3,3)));
         assert_eq!(Razionali::new(23,20),Razionali::somma(Razionali::new(3,4),Razionali::new(2,5)));
+    }
+
+    #[test]
+    fn testMulI32() {
+        assert_eq!(Razionali::new(50,3),Razionali::new(10,3).mul(5));
+    }
+
+    #[test]
+    fn testTraitMul() {
+        assert_ne!(Razionali::new(22,3),Razionali::new(5,2).mul(Razionali::new(4,2)));
+        assert_eq!(Razionali::new(20,4),Razionali::new(5,2).mul(Razionali::new(4,2)));
+    }
+
+    #[test]
+    fn testAddI32() {
+        assert_eq!(Razionali::new(16,3),Razionali::new(1,3).add(5));
+        assert_eq!(Razionali::new(32,5),Razionali::new(2,5).add(6));
+    }
+    
+    #[test]
+    fn testTraitAdd() {
+        assert_eq!(Razionali::new(11,15),Razionali::new(1,3).add(Razionali::new(2,5)));
+        assert_eq!(Razionali::new(11,12),Razionali::new(2,3).add(Razionali::new(1,4)));
     }
 
 }
