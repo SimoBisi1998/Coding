@@ -1,5 +1,14 @@
-///Permette di generare un numero razionale 
+
 #[derive(Debug,PartialEq)]
+/// Struttura che permette di rappresentare un numero razionale
+/// # Examples:
+/// ```
+/// use RUST02::Razionali;
+/// let rat = Razionali {num : 5, denum : 6};
+/// assert_eq!(rat.num,5);
+/// assert_eq!(rat.denum,6);
+/// ```
+
 pub struct Razionali{
     pub num : i32,
     pub denum : i32
@@ -80,7 +89,8 @@ impl Razionali {
     /// `b` - un intero a 32 bit
     /// # Examples
     /// ```
-    /// let number1 = RUST02::Razionali::new(9,16);
+    /// use RUST02::Razionali;
+    /// let number1 = Razionali::new(9,16);
     /// assert_eq!(number1.num,9);
     /// assert_eq!(number1.denum,16);
     /// ```
@@ -93,9 +103,11 @@ impl Razionali {
     /// `rational1` - un istanza di `Razionali`
     /// # Examples
     /// ```
-    /// let number1 = RUST02::Razionali::new(1,5);
-    /// let number2 =  RUST02::Razionali::new(2,7);
-    /// let result = RUST02::Razionali::somma(number1,number2);
+    /// use RUST02::Razionali;
+    /// 
+    /// let number1 = Razionali::new(1,5);
+    /// let number2 = Razionali::new(2,7);
+    /// let result = Razionali::somma(number1,number2);
     /// assert_eq!(result.num,17);
     /// assert_eq!(result.denum,35);
     /// ```
@@ -122,8 +134,9 @@ impl Razionali {
     /// `x` - un intero a 32 bit
     /// # Examples
     /// ```
+    /// use RUST02::Razionali;
     /// let number1 = 5;
-    /// let result = RUST02::Razionali::int_to_rational(number1);
+    /// let result = Razionali::int_to_rational(number1);
     /// assert_eq!(result.num,5);
     /// assert_eq!(result.denum,1);
     /// ```
@@ -138,9 +151,10 @@ impl Razionali {
     /// `raz2` - istanza mutabile di `Razionali`
     /// # Examples
     /// ```
-    /// let mut ex1 = RUST02::Razionali::new(8,3);
-    /// let mut ex2 = RUST02::Razionali::new(7,12);
-    /// let result = RUST02::Razionali::prodotto(ex1,ex2);
+    /// use RUST02::Razionali;
+    /// let mut ex1 = Razionali::new(8,3);
+    /// let mut ex2 = Razionali::new(7,12);
+    /// let result = Razionali::prodotto(ex1,ex2);
     /// assert_eq!(result.num,56);
     /// assert_eq!(result.denum,36);
     /// ```
@@ -152,7 +166,8 @@ impl Razionali {
     /// ritornando una struct di Razionali
     /// # Examples 
     /// ```
-    /// let mut rat = RUST02::Razionali::riduzione(RUST02::Razionali::new(15,25));
+    /// use RUST02::Razionali;
+    /// let mut rat = Razionali::riduzione(Razionali::new(15,25));
     /// assert_eq!(rat.num, 3);
     /// assert_eq!(rat.denum, 5);
     /// ```
@@ -177,9 +192,10 @@ impl Razionali {
     /// Calcola il minimo comune multiplo tra due numeri e ritorna un i32
     /// # Examples 
     /// ```
-    /// let ex1 = RUST02::Razionali::new(10,5);
-    /// let ex2 = RUST02::Razionali::new(3,15);
-    /// let result = RUST02::Razionali::mcm(&ex1,&ex2);
+    /// use RUST02::Razionali;
+    /// let ex1 = Razionali::new(10,5);
+    /// let ex2 = Razionali::new(3,15);
+    /// let result = Razionali::mcm(&ex1,&ex2);
     /// assert_eq!(result, 15);
     /// ```
     pub fn mcm(&self,other: &Razionali) -> i32{
