@@ -21,8 +21,7 @@ struct Argento;
 struct Oro;
 
 #[derive(Debug,PartialEq)]
-
-enum TipoSaldo {
+pub enum TipoSaldo {
     Rosso,
     Argento,
     Oro
@@ -111,6 +110,23 @@ impl StatoSaldo for Oro {
 
 impl ContoBancario {
 
+    /// Crea una nuova istanza di ContoBancario
+    /// # Arguments
+    /// `clientName` - una stringa che rappresenta il nome del cliente
+    /// `saldo` - un intero a 32 bit corrispondente al saldo del conto bancario
+    /// `min` - un intero a 32 bit corrispondente al limite inferiore del saldo
+    /// `max` - un intero a 32 bit corrispondente al limite superiore del saldo
+    /// `interesse` - un intero a 32 bit corrispondente all'interesse del conto bancario
+    /// # Examples
+    /// ```
+    /// use RUST05::ContoBancario;
+    /// let mut number1 = ContoBancario::new("Luca".to_string(),50,30,80,20);
+    /// assert_eq!("Luca",number1.cliente);
+    /// assert_eq!(50,number1.saldo);
+    /// assert_eq!(30,number1.limite_inf);
+    /// assert_eq!(80,number1.limite_sup);
+    /// assert_eq!(20,number1.interesse);
+    /// ```
     pub fn new(clientName : String, saldo : i32, min : i32, max : i32, interesse : i32) -> Self {
         let stateBox: Box<dyn StatoSaldo> = match saldo<min {
             true => Box::new(Rosso),
@@ -130,6 +146,16 @@ impl ContoBancario {
         }
     }
 
+    /// Aggiunge un intero al saldo del conto bancario
+    /// # Arguments
+    /// `&mut self` - un riferimento ad un'istanza mutabile di conto bancario
+    /// `value` - un intero a 32 bit da aggiungere al saldo
+    /// # Examples
+    /// ```
+    /// use RUST05::ContoBancario;
+    /// let mut number1 = ContoBancario::new("Luca".to_string(),50,30,80,20);
+    /// assert_eq!(70,number1.aggiungiSaldo(20).saldo);
+    /// ```
     pub fn aggiungiSaldo(&mut self,value : i32) -> &mut Self{
         //aggiungo il saldo
         self.saldo = self.statoSaldo.deposita(self.saldo, value);
@@ -143,13 +169,23 @@ impl ContoBancario {
         self
     }
 
-    pub fn preleva(&mut self, value : i32,interesse : i32) -> &mut Self{
+    /// Rimuove un intero dal saldo del conto bancario
+    /// # Arguments
+    /// `&mut self` - un riferimento ad un'istanza mutabile di conto bancario
+    /// `value` - un intero a 32 bit da aggiungere al saldo
+    /// # Examples
+    /// ```
+    /// use RUST05::ContoBancario;
+    /// let mut number1 = ContoBancario::new("Andrea".to_string(),50,60,80,20);
+    /// assert_eq!(60,number1.preleva(20).saldo);
+    /// ```
+    pub fn preleva(&mut self, value : i32) -> &mut Self{
         //aggiungo il saldo
         self.saldo = self.statoSaldo.preleva(self.saldo, value);
 
         //se lo stato è rosso/oro pago interessi
         if self.statoSaldo.is_type() == TipoSaldo::Rosso {
-            self.saldo += self.statoSaldo.pagaInteressi(self.saldo, interesse);
+            self.saldo += self.statoSaldo.pagaInteressi(self.saldo, self.interesse);
 
             //cambio lo stato
             self.changeState();
@@ -164,6 +200,16 @@ impl ContoBancario {
         self
     }
 
+    /// Cambia lo stato del conto in base al saldo
+    /// # Arguments
+    /// `&mut self` - un riferimento ad un'istanza mutabile di conto bancario
+    /// # Examples
+    /// ```
+    /// use RUST05::ContoBancario;
+    /// let mut number1 = ContoBancario::new("Andrea".to_string(),50,60,80,20);
+    /// number1.changeState();
+    /// assert_eq!(RUST05::TipoSaldo::Rosso,number1.statoSaldo.is_type());
+    /// ```
     pub fn changeState(&mut self) -> &mut ContoBancario {
         //se lo stato del saldo è inferiore al limite, lo stato del saldo diventa rosso
         match self.saldo<self.limite_inf {
