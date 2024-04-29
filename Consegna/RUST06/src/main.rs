@@ -6,6 +6,12 @@ struct Node<T:Copy> {
 	prev: Pointer<T>,
 }
 
+#[derive(Clone,Copy,Debug,PartialEq)]
+struct Point{
+    a : i32,
+    b : i32
+}
+
 impl<T:Copy> Node<T> {
 	fn new(item: T) -> Self {
         Node {
@@ -111,60 +117,56 @@ impl<T:Copy> DoublyPointedList<T> {
     //della lista mentre se e' negativo lo ritornate dalla coda 
 	//(-1 e' il primo elemento dalla coda)
 	pub fn get(&self, n:i32) -> Option<T> {
-        let mut current = self.head.clone();
-        let mut count: usize = 1;
-        if n!=0 {
-            if n>0 {
-                loop {
-                    match current {
-                        Some(ref node) => {
+        if n!=0 && self.size>0{
+            let mut current: Option<Rc<RefCell<Node<T>>>>;
+            let mut count: usize = 1;
+            let mut newCount = -1;
+            
+            if n<0 {
+                current = self.tail.clone();    
+            }else {
+                current = self.head.clone();    
+            }
+
+            loop {
+                match current {
+                    Some(ref node) => {
+                        if n<0 {
+                            if newCount == n {
+                                let result = node.borrow_mut().item;
+                                return Some(result)
+                            }
+    
+                            if count<self.size {
+                                ///node.borrow restituisce un riferimento a node.prev. Questo ritorna un &Option<T>
+                                /// per poter ottenere in questo caso il vero valore di prev devo fare l'unwrap la quale
+                                /// richiede per forza un Option<&T> che viene fatto tramite as_ref
+                                /// infine viene clonato il valore in nextNode
+                                let nextNode = Some(node.borrow().prev.as_ref().unwrap().clone());
+                                current = nextNode;
+                            }
+    
+                        }else {
                             if count == n.try_into().unwrap() {
                                 let result = node.borrow_mut().item;
                                 return Some(result)
-                                //return Some(Rc::try_unwrap(current?).ok().unwrap().into_inner().item)
                             }
-        
                             if count<self.size {
-                                let nextNode = Some(node.borrow_mut().next.as_ref().unwrap().clone());
+                                let nextNode = Some(node.borrow().next.as_ref().unwrap().clone());
                                 current = nextNode;
                             }
-        
-                            count+=1;
-                        },
-                        None => {
-        
                         }
-                    }
-                }
-            }else {
-                current = self.tail.clone();
-                let mut newCount = -1;
-                loop {
-                    match current {
-                        Some(ref node) => {
-                            if newCount == n.try_into().unwrap() {
-                                let result = node.borrow_mut().item;
-                                return Some(result)
-                                //return Some(Rc::try_unwrap(current?).ok().unwrap().into_inner().item)
-                            }
-        
-                            if count<self.size {
-                                let nextNode = Some(node.borrow_mut().prev.as_ref().unwrap().clone());
-                                current = nextNode;
-                            }
                             
-                            newCount-=1;
-                            count+=1;
-                        },
-                        None => {
-                            return None
-                        }
+                        newCount-=1;
+                        count+=1;  
+                    },
+                    None => {
+                        return None
                     }
                 }
-            }
-            
+            }    
         }else {
-            None
+            return None
         }
         
     }
@@ -206,21 +208,10 @@ impl<T:Copy> Clone for DoublyPointedList<T>{
     }
 }
 
-
-fn main() {
-    let mut newList = DoublyPointedList::new();
-    newList.push_front(50);
-    newList.push_front(30);
-    newList.push_front(10);
-    newList.push_front(150);
-    newList.push_front(8);
-    
-    newList.get(3);
-    
-}
+fn main() {}
 
 #[test]
-fn iterate() {
+fn testGet() {
     let mut newList = DoublyPointedList::new();
     newList.push_front(50);
     newList.push_front(30);
@@ -231,4 +222,58 @@ fn iterate() {
     assert_eq!(Some(10),newList.get(3));
     assert_eq!(Some(50),newList.get(5));
     assert_eq!(Some(30),newList.get(-2));
+
+    //test with Point structure
+    let mut newList: DoublyPointedList<Point> = DoublyPointedList::new();
+    let point = Point{
+        a : 5,
+        b : 10
+    };
+
+    let mut newPoint = point.clone();
+    newPoint.a = 15;
+
+    newList.push_front(point);
+    newList.push_front(newPoint);
+    assert_eq!(Some(point),newList.get(2));
+    assert_eq!(Some(point),newList.get(-1));
+    assert_eq!(Some(newPoint),newList.get(1));
+
+    let mut newListEmpty: DoublyPointedList<Point> = DoublyPointedList::new();
+    assert_eq!(None,newListEmpty.get(1));
+    newListEmpty.push_back(newPoint);
+    assert_eq!(Some(newPoint),newListEmpty.get(-1));
+}
+
+#[test]
+fn testPushFront() {
+    let point = Point{
+        a : 5,
+        b : 10
+    };
+
+    let mut newPoint = point.clone();
+    newPoint.a = 15;
+
+    let mut list = DoublyPointedList::new();
+    list.push_front(point);
+    list.push_front(newPoint);
+    assert_eq!(Some(newPoint),list.pop_front());
+}
+
+#[test]
+fn testPushBack(){
+    let point = Point{
+        a : 5,
+        b : 10
+    };
+
+    let mut newPoint = point.clone();
+    newPoint.a = 25;
+    newPoint.b = 10;
+
+    let mut list = DoublyPointedList::new();
+    list.push_front(point);
+    list.push_front(newPoint);
+    assert_eq!(Some(point),list.pop_back());
 }
