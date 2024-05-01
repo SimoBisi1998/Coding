@@ -1,21 +1,27 @@
 use std::{rc::Rc, cell::RefCell, borrow::BorrowMut, ops::{DerefMut, Deref}};
 
 
-pub struct Node<T>{
+pub struct Node<T:Clone>{
     item : T,
     next : Option<Rc<RefCell<Node<T>>>>,
     prev : Option<Rc<RefCell<Node<T>>>>
 }
 
-struct DoublePointedList<T>{
+struct DoublePointedList<T:Clone>{
     head : Option<Rc<RefCell<Node<T>>>>,
     tail : Option<Rc<RefCell<Node<T>>>>,
     size : usize
 }
 
-pub struct NodeRef<T>(RefCell<Node<T>>);
+impl<T: Clone> Clone for Node<T>{
+    fn clone(&self) -> Self {
+        Self { item: self.item.clone(), next: self.next.clone(), prev: self.prev.clone() }
+    }
+}
 
-impl<T> Deref for NodeRef<T> {
+pub struct NodeRef<T:Clone>(RefCell<Node<T>>);
+
+impl<T:Clone> Deref for NodeRef<T> {
     type Target = RefCell<Node<T>>;
 
     fn deref(&self) -> &Self::Target {
@@ -23,7 +29,7 @@ impl<T> Deref for NodeRef<T> {
     }
 }
 
-impl<T> DerefMut for NodeRef<T> {
+impl<T:Clone> DerefMut for NodeRef<T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
@@ -31,7 +37,7 @@ impl<T> DerefMut for NodeRef<T> {
 
 
 
-impl<T> DoublePointedList<T>{
+impl<T:Clone> DoublePointedList<T>{
     fn new() -> Self {
         DoublePointedList { head: None, tail: None, size: 0 }
     }
@@ -77,23 +83,144 @@ impl<T> DoublePointedList<T>{
         }
     }
 
+    pub fn pop_back(&mut self) -> Option<T> {
+        let x = self.tail.take().map(|mut node| {
+            self.size-=1;
+            match node.borrow_mut().as_ref().borrow_mut().prev.take() {
+                Some(mut currentNode) => {
+                    currentNode.borrow_mut().as_ref().borrow_mut().next = None;
+                    self.tail = Some(currentNode);
+                },
+                None => {
+                    Some(self.head.take());
+                }
+            }
+            let x: Option<T>= Some(Rc::try_unwrap(node).ok().unwrap().into_inner().item);
+            return Some(x)  
+        });
+        Some(x.unwrap().unwrap().unwrap())   
+    }
+
+    pub fn pop_front(&mut self) -> Option<T> {
+        let x = self.head.take().map(|mut node| {
+            self.size-=1;
+            match node.borrow_mut().as_ref().borrow_mut().next.take() {
+                Some(mut currentNode) => {
+                    currentNode.borrow_mut().as_ref().borrow_mut().prev = None;
+                    self.head = Some(currentNode);
+                },
+                None => {
+                    Some(self.tail.take());
+                }
+            }
+            let x: Option<T>= Some(Rc::try_unwrap(node).ok().unwrap().into_inner().item);
+            return Some(x)  
+        });
+        Some(x.unwrap().unwrap().unwrap())   
+    }
+
+    // Se n e' positivo ritornate l'ennesimo elemento dall'inizio 
+     //della lista mentre se e' negativo lo ritornate dalla coda 
+	//(-1 e' il primo elemento dalla coda)
+	pub fn get(&self, n:i32) -> Option<T> {
+        if n!=0 && self.size>0{
+            let mut current: Option<Rc<RefCell<Node<T>>>>;
+            let mut count: usize = 1;
+            let mut newCount = -1;
+            
+            if n<0 {
+                current = self.tail.clone();    
+            }else {
+                current = self.head.clone();    
+            }
+
+            loop {
+                match current {
+                    Some(ref mut node) => {
+                        if n<0 {
+                            if newCount == n {
+                                let result = Some(node.borrow_mut().as_ref().borrow_mut().item.clone());
+                                return result
+                            }
+    
+                            if count<self.size {
+                                let nextNode = Some(node.borrow().prev.as_ref().unwrap().clone());
+                                current = nextNode;
+                            }
+    
+                        }else {
+                            if count == n.try_into().unwrap() {
+                                let result = Some(node.borrow_mut().as_ref().borrow_mut().item.clone());
+                                
+                                return result
+                            }
+                            if count<self.size {
+                                let nextNode = Some(node.borrow().next.as_ref().unwrap().clone());
+                                current = nextNode;
+                            }
+                        }
+                            
+                        newCount-=1;
+                        count+=1;  
+                    },
+                    None => {
+                        return None
+                    }
+                }
+            }    
+        }else {
+            return None
+        }
+        
+    }
+
+
 }
 
-impl<T> Node<T>{
+impl<T:Clone> Node<T>{
     fn new(item : T) -> Self {
         Self { item: item, next: None, prev: None }
     }
 }
 
 
+fn main() {}
 
-fn main() {
+#[test]
+fn testPushFront() {
     let mut list = DoublePointedList::new();
     list.push_front(String::from("ciao"));
     list.push_front(String::from("bella zio"));
+}
 
+#[test]
+fn testPopBack() {
     let mut newlist = DoublePointedList::new();
     newlist.push_back(String::from("ciao"));
     newlist.push_back(String::from("bella zio"));
+    assert_eq!(Some(String::from("bella zio")),newlist.pop_back());
+    newlist.push_front(String::from("comeva"));
+    assert_eq!(Some(String::from("comeva")),newlist.pop_front());
     
+}
+
+#[test]
+fn testPopFront() {
+    let mut newlist = DoublePointedList::new();
+    newlist.push_front(String::from("ciao"));
+    newlist.push_front(String::from("bella zio"));
+    assert_eq!(Some(String::from("bella zio")),newlist.pop_front());
+    newlist.push_back(String::from("tappo"));
+    assert_eq!(Some(String::from("ciao")),newlist.pop_front());
+}
+
+#[test]
+fn testGet() {
+    let mut newlist = DoublePointedList::new();
+    newlist.push_front(String::from("pera"));
+    newlist.push_front(String::from("banana"));
+    assert_eq!(Some(String::from("banana")),newlist.get(1));
+    assert_eq!(Some(String::from("pera")),newlist.get(-1));
+    newlist.push_back(String::from("mela"));
+    assert_eq!(Some(String::from("mela")),newlist.get(-1));
 }
