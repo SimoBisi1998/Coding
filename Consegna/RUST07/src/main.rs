@@ -1,16 +1,18 @@
 use std::{rc::Rc, cell::RefCell, borrow::BorrowMut, ops::{DerefMut, Deref}};
+use std::convert::TryInto;
+
 
 
 pub struct Node<T:Clone>{
-    item : T,
-    next : Option<Rc<RefCell<Node<T>>>>,
-    prev : Option<Rc<RefCell<Node<T>>>>
+    pub item : T,
+    pub next : Option<Rc<RefCell<Node<T>>>>,
+    pub prev : Option<Rc<RefCell<Node<T>>>>
 }
 
-struct DoublePointedList<T:Clone>{
-    head : Option<Rc<RefCell<Node<T>>>>,
-    tail : Option<Rc<RefCell<Node<T>>>>,
-    size : usize
+pub struct DoublePointedList<T:Clone>{
+    pub head : Option<Rc<RefCell<Node<T>>>>,
+    pub tail : Option<Rc<RefCell<Node<T>>>>,
+    pub size : usize
 }
 
 impl<T: Clone> Clone for Node<T>{
@@ -38,6 +40,13 @@ impl<T:Clone> DerefMut for NodeRef<T> {
 
 
 impl<T:Clone> DoublePointedList<T>{
+
+    /// Crea una nuova istanza di DoublePointedList
+    /// # Arguments 
+    /// # Examples
+    /// ```
+    /// let mut list = DoublePointedList::new();
+    /// ```
     fn new() -> Self {
         DoublePointedList { head: None, tail: None, size: 0 }
     }
@@ -122,7 +131,7 @@ impl<T:Clone> DoublePointedList<T>{
     // Se n e' positivo ritornate l'ennesimo elemento dall'inizio 
      //della lista mentre se e' negativo lo ritornate dalla coda 
 	//(-1 e' il primo elemento dalla coda)
-	pub fn get(&self, n:i32) -> Option<T> {
+	pub fn get(&mut self, n:i32) -> Option<T> {
         if n!=0 && self.size>0{
             let mut current: Option<Rc<RefCell<Node<T>>>>;
             let mut count: usize = 1;
@@ -139,8 +148,22 @@ impl<T:Clone> DoublePointedList<T>{
                     Some(ref mut node) => {
                         if n<0 {
                             if newCount == n {
-                                let result = Some(node.borrow_mut().as_ref().borrow_mut().item.clone());
-                                return result
+                                let next_node = node.borrow().next.clone();
+                                let prev_node = node.borrow().prev.clone();
+                                if let Some(mut next) = next_node.clone() {
+                                    next.borrow_mut().as_ref().borrow_mut().prev = prev_node.clone();
+                                }else{
+                                    self.tail = prev_node.clone();
+                                }
+                                if let Some(mut prev) = prev_node.clone() {
+                                    prev.borrow_mut().as_ref().borrow_mut().next = next_node.clone();
+                                }else {
+                                    self.head = next_node;
+                                }
+
+                                self.size -= 1;
+                                
+                                return Some(node.borrow_mut().as_ref().borrow_mut().item.clone());
                             }
     
                             if count<self.size {
@@ -150,9 +173,22 @@ impl<T:Clone> DoublePointedList<T>{
     
                         }else {
                             if count == n.try_into().unwrap() {
-                                let result = Some(node.borrow_mut().as_ref().borrow_mut().item.clone());
+                                let next_node = node.borrow().next.clone();
+                                let prev_node = node.borrow().prev.clone();
+                                if let Some(mut next) = next_node.clone() {
+                                    next.borrow_mut().as_ref().borrow_mut().prev = prev_node.clone();
+                                }else{
+                                    self.tail = prev_node.clone();
+                                }
+                                if let Some(mut prev) = prev_node.clone() {
+                                    prev.borrow_mut().as_ref().borrow_mut().next = next_node.clone();
+                                }else {
+                                    self.head = next_node;
+                                }
+
+                                self.size -= 1;
                                 
-                                return result
+                                return Some(node.borrow_mut().as_ref().borrow_mut().item.clone());
                             }
                             if count<self.size {
                                 let nextNode = Some(node.borrow().next.as_ref().unwrap().clone());
@@ -223,4 +259,27 @@ fn testGet() {
     assert_eq!(Some(String::from("pera")),newlist.get(-1));
     newlist.push_back(String::from("mela"));
     assert_eq!(Some(String::from("mela")),newlist.get(-1));
+}
+
+#[test]
+fn testGetRemove() {
+    let mut newlist = DoublePointedList::new();
+    newlist.push_front(String::from("pera"));
+    newlist.push_front(String::from("banana"));
+    newlist.push_front(String::from("mela"));
+    assert_eq!(Some(String::from("banana")),newlist.get(2));
+    assert_eq!(2,newlist.size);
+    assert_eq!(Some(String::from("mela")),newlist.get(1));
+    assert_eq!(1,newlist.size);
+    newlist.push_back(String::from("fragola"));
+    assert_eq!(2,newlist.size);
+    assert_eq!(Some(String::from("fragola")),newlist.get(2));
+    assert_eq!(1,newlist.size);
+    assert_eq!(Some(String::from("pera")),newlist.get(1));
+    assert_eq!(0,newlist.size);
+    newlist.push_front(String::from("banana"));
+    newlist.push_front(String::from("mela"));
+    assert_eq!(2,newlist.size);
+    assert_eq!(Some(String::from("banana")),newlist.get(-1));
+    assert_eq!(1,newlist.size);
 }
