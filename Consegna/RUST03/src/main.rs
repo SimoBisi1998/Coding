@@ -1,4 +1,4 @@
-use std::cell::Cell;
+use std::{cell::Cell, env::{self, args}};
 use rand::prelude::*;
 mod game_config;
 use game_config::{GameConfig, Player,Direction};
@@ -117,19 +117,42 @@ impl Matrix {
 
         while MAX_CHANCE != 0{
             match Self::flipCoin() {
-                Flip::Head => game = game.changePlayerPosition(Flip::Head),//si muove in quella direzione,
-                Flip::Cross => game = game.changePlayerPosition(Flip::Cross), //direzione scelta casualmente e fa un passo qua ,
+                Flip::Head => if let Some(new_game) = game.changePlayerPosition(Flip::Head) {
+                    game = new_game;
+                } else {
+                    println!("HAI PERSO!");
+                    break; 
+                }
+                Flip::Cross => if let Some(new_game) = game.changePlayerPosition(Flip::Cross) {
+                    game = new_game;
+                } else {
+                    println!("HAI PERSO!");
+                    break; 
+                }, 
             };
 
             MAX_CHANCE-=1;
         }
+
+        if MAX_CHANCE == 0 {
+            println!("HAI VINTO COMPLIMENTI!");
+        }
+        
     }
 
 }
 
 fn main() {
-    let mut matrix = Matrix::new(10, 10);
-    let v = matrix.allocMatrix(4, 4);
+    let args : Vec<String> = env::args().collect();
+
+    let rows = args.get(1).unwrap();
+    let columns = args.get(2).unwrap();
+    let food = args.get(3).unwrap();
+    let poison = args.get(4).unwrap();
+
+
+    let mut matrix = Matrix::new(rows.parse().unwrap(), columns.parse().unwrap());
+    let v = matrix.allocMatrix(food.parse().unwrap(), poison.parse().unwrap());
 
     //print matrix
     println!("Primo round!");
