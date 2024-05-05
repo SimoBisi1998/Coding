@@ -1,0 +1,10 @@
+/Users/simobisi/Desktop/Rust/Consegna/RUST03/target/debug/deps/libgetrandom-42acad280ceb45de.rmeta: /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/lib.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/error.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/util.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/error_impls.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/util_libc.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/macos.rs
+
+/Users/simobisi/Desktop/Rust/Consegna/RUST03/target/debug/deps/getrandom-42acad280ceb45de.d: /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/lib.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/error.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/util.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/error_impls.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/util_libc.rs /Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/macos.rs
+
+/Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/lib.rs:
+/Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/error.rs:
+/Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/util.rs:
+/Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/error_impls.rs:
+/Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/util_libc.rs:
+/Users/simobisi/.cargo/registry/src/index.crates.io-6f17d22bba15001f/getrandom-0.2.14/src/macos.rs:
