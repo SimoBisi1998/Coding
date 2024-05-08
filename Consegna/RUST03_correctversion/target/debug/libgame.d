@@ -1,1 +1,0 @@
-/Users/simobisi/Desktop/Rust/Consegna/Gioco/target/debug/libgame.rlib: /Users/simobisi/Desktop/Rust/Consegna/Gioco/src/config/game_config.rs /Users/simobisi/Desktop/Rust/Consegna/Gioco/src/config/game_struct.rs /Users/simobisi/Desktop/Rust/Consegna/Gioco/src/config/mod.rs /Users/simobisi/Desktop/Rust/Consegna/Gioco/src/lib.rs
