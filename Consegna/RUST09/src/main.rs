@@ -31,7 +31,7 @@ enum AuctionOutcome {
 
 fn main() {
     // Numero di partecipanti all'asta
-    let participants_number = 5;
+    let participants_number = 40;
 
     //new instance of HASHMAP
     let mut hashmap: Arc<Mutex<HashMap<usize, i32>>> = Arc::new(Mutex::new(HashMap::new()));
@@ -40,7 +40,7 @@ fn main() {
     let product = Arc::new(Mutex::new(Product {
         name: String::from("Computer"),
         initial_price: 50,
-        reserve_price: 30,
+        reserve_price: 50,
     }));
 
     // Creazione della struttura per memorizzare l'esito dell'asta
@@ -72,7 +72,7 @@ fn main() {
 
             while interested {
                 // Simulazione dell'offerta del partecipante
-                let offer = rng.gen_range(0..=100);
+                let offer = rng.gen_range(0..=500);
                 println!("Participant {} offers: {}", participant_id, offer);
 
                 // Modifica del prezzo del prodotto
@@ -84,27 +84,13 @@ fn main() {
                     println!("Notifying all participants about new price: {}", product_guard.initial_price);
 
                     hashMapClone.lock().unwrap().insert(participant_id, offer);
-
-                    tx_clone.send(AuctionOutcome::Winner(participant_id));
                 } else {
                     // Il partecipante non è più interessato se l'offerta non supera il prezzo attuale
                     interested = false;
-
-                    // Invio della notifica al canale
-                    tx_clone.send(AuctionOutcome::Loser(participant_id));
                 }
 
                 // Attesa prima di fare una nuova offerta
                 thread::sleep(Duration::from_secs(1));
-            }
-
-            // Verifica se il partecipante è il vincitore e tiene traccia del vincitore
-            let winning_price = product_clone.lock().unwrap().initial_price;
-            if winning_price >= product_clone.lock().unwrap().initial_price {
-                let mut winner_guard = winning_participant_clone.lock().unwrap();
-                if winner_guard.is_none() || winning_price > product_clone.lock().unwrap().initial_price {
-                    *winner_guard = Some(participant_id);
-                }
             }
         });
 
@@ -121,30 +107,32 @@ fn main() {
     let mut result_guard = result.lock().unwrap();
     if winning_price >= product.lock().unwrap().reserve_price {
         result_guard.winning_price = winning_price;
-        // Se il prezzo supera il prezzo di riserva, assegna il vincitore utilizzando la variabile condivisa
-        let winner_id = *winning_participant.lock().unwrap();
-        result_guard.winner = winner_id;
-    }
-
-    let mut max = 0;
-    let mut winner_index: usize=usize::MAX;
-    for (k,v) in <HashMap<usize, i32> as Clone>::clone(&hashmap.lock().unwrap()).into_iter() {
-        if v > max {
-            max = v;
-            winner_index = k;
-        }        
-    }
-
-    if(winner_index>=0){
-        println!("Auction ended. Product '{}' sold for {} to participant {}",
-        result_guard.product_name, result_guard.winning_price, winner_index);
-    }
-
-    for i in 0..participants_number{
-        if i != winner_index {
-            println!("Partecipant number {} lost the acution.", i);
-        }else {
-            println!("Partecipant number {} won the acution.", i);
+        let mut max = 0;
+        let mut winner_index: usize=usize::MAX;
+        for (k,v) in <HashMap<usize, i32> as Clone>::clone(&hashmap.lock().unwrap()).into_iter() {
+            if v > max {
+                max = v;
+                winner_index = k;
+            }        
         }
+
+        if(winner_index>=0){
+            println!("Auction ended. Product '{}' sold for {} to participant {}",
+            result_guard.product_name, result_guard.winning_price-1, winner_index);
+        }
+    
+        for i in 0..participants_number{
+            if i != winner_index {
+                println!("Partecipant number {} lost the acution.", i);
+            }else {
+                println!("Partecipant number {} won the acution.", i);
+            }
+        }
+    }else {
+        println!("Auction endend. The price dont meet the reserve price");
     }
+
+    
+
+    
 }
