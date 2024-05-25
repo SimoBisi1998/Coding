@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.33026.149
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MulticastReceiver", "MulticastReceiver\MulticastReceiver.csproj", "{040D7DC5-0887-4796-B6DF-D011B1A4A61C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{040D7DC5-0887-4796-B6DF-D011B1A4A61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040D7DC5-0887-4796-B6DF-D011B1A4A61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040D7DC5-0887-4796-B6DF-D011B1A4A61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040D7DC5-0887-4796-B6DF-D011B1A4A61C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F96E225-00C9-47DD-ADE0-A3223ABC3189}
+	EndGlobalSection
+EndGlobal
