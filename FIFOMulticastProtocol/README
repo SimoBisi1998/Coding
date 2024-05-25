@@ -6,8 +6,7 @@ This protocol can retrieve datas from multiple senders in the proper order.
 This image below represents the sw architecture of the code.
 
 
-
-![Screenshot](https://github.com/SimoBisi1998/Coding/blob/master/FIFOMulticastProtocol/MulticastSender/Architecture.png)
+https://github.com/SimoBisi1998/Coding/blob/master/FIFOMulticastProtocol/MulticastSender/Architecture.png
 
 
 #HOW TO RUN IT
