@@ -13,7 +13,6 @@ C:/Users/Admin/source/repos/MulticastSender/MulticastSender/obj/Debug/MulticastS
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/bin/Debug/MulticastSender.pdb
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/bin/Debug/Newtonsoft.Json.dll
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/bin/Debug/Newtonsoft.Json.xml
-/Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/obj/Debug/MulticastSender.csproj.AssemblyReference.cache
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/obj/Debug/MulticastSender.csproj.CoreCompileInputs.cache
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/obj/Debug/MulticastSender.csproj.CopyComplete
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastSender/MulticastSender/obj/Debug/MulticastSender.exe

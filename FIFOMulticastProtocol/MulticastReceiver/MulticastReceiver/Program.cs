@@ -17,6 +17,7 @@ namespace MulticastReceiver
         public static Message[] arraySeq = new Message[4];
         public static List<Message> messageList = new List<Message>();
         public static List<Message> duplicatedMessages = new List<Message>();
+        public static List<Message> elementsToRemove = new List<Message>();
         public static bool find = false;
 
 
@@ -40,6 +41,8 @@ namespace MulticastReceiver
             //set socket to receive data
             IPEndPoint endPoint = new IPEndPoint(multicastAddress, 3000);
 
+            Console.WriteLine("Waiting for messages...");
+
             while (true)
             {
                 //bytes received
@@ -54,42 +57,56 @@ namespace MulticastReceiver
                 //serialize json into a Message
                 Message messageReceived = JsonConvert.DeserializeObject<Message>(jsonMessage);
 
-                //message to remove from list
-                Message messageToRemove = null;
-
                 for (int i = 0; i < arraySeq.Length; i++)
                 {
                     //if the received seq is less than the respective seq in the array
                     if (((string)obj["nodeId"]).Equals(arraySeq[i].nodeId))
                     {
+                        //if the value is less and also i didnt send this message before
                         if ((int)obj["actualSeq"] <= arraySeq[i].actualSeq && !duplicatedMessages.Contains(messageReceived))
                         {
-                            //print message
-                            receivedMessage(messageReceived, i);
+                            //if its not present in the "queue"
+                            if (!messageList.Contains(messageReceived))
+                            {
+                                //print message
+                                receivedMessage(messageReceived, i, "");
+                            }
 
+                            //foreach message inside the list of message inqueued
                             foreach (Message message in messageList)
                             {
                                 if (message.nodeId.Equals(arraySeq[i].nodeId) && message.actualSeq <= arraySeq[i].actualSeq)
                                 {
-                                    //assign the message to remove in the variable
-                                    messageToRemove = message;
+                                    elementsToRemove.Add(message);
                                     find = true;
                                 }
                             }
 
                             if(find)
                             {
-                                //print message
-                                receivedMessage(messageToRemove, i);
+                                foreach(Message m in elementsToRemove)
+                                {
+                                    //print message
+                                    receivedMessage(m, i,"Message remove from queue");
 
-                                //remove the element from the list
-                                messageList.Remove(messageToRemove);
+                                    if (!duplicatedMessages.Contains(m)) duplicatedMessages.Add(m);
+
+                                    //remove the element from the list
+                                    messageList.Remove(m);
+                                }
+
+                                //free the list of elements to remove
+                                elementsToRemove.Clear();
 
                                 find = false;
                             }
 
-                            //add the message received to keept track of the duplicated messages
-                            duplicatedMessages.Add(messageReceived);
+                            if (!duplicatedMessages.Contains(messageReceived))
+                            {
+                                //add the message received to keept track of the duplicated messages
+                                duplicatedMessages.Add(messageReceived);
+                            }
+                            
                         }
                         else
                         {
@@ -101,34 +118,22 @@ namespace MulticastReceiver
                                     //otherwise put in a queue
                                     messageList.Add(messageReceived);
 
-                                    Console.WriteLine("Message :" + messageReceived.nodeId + "," + messageReceived.actualSeq + " enqueued..");
-                                }
-                                else
-                                {
-                                    //otherwise print the advise
-                                    Console.WriteLine("Message duplicated and ignored.");
+                                    Console.WriteLine("Message: " + messageReceived.nodeId + "," + messageReceived.actualSeq + " enqueued..");
                                 }
                             }
-
-                            //add the message received to keept track of the duplicated messages
-                            duplicatedMessages.Add(messageReceived);
                         }
                     }
                 }
-
-
-                //wait one second
-                Thread.Sleep(1000);
             }
         }
 
-        public static void receivedMessage(Message messageReceived,int i)
+        public static void receivedMessage(Message messageReceived,int i,string message)
         {
             //increase the respective value
             arraySeq[i].actualSeq++;
 
             //print the message
-            messageReceived.printMessage();
+            messageReceived.printMessage(message);
         }
     }
 }

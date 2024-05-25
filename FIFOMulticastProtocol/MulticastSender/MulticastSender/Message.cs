@@ -18,9 +18,9 @@ namespace MulticastSender
             this.actualSeq = sendSeq;
         }
 
-        public void toString()
+        public void printMessage()
         {
-            Console.WriteLine(nodeId + ", " + actualSeq);
+            Console.WriteLine("Message sent: "+this.nodeId + ", " + this.actualSeq);
         }
     }
 }

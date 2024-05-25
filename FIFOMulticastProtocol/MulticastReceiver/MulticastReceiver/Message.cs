@@ -18,9 +18,10 @@ namespace MulticastReceiver
             this.actualSeq = sendSeq;
         }
 
-        public void printMessage()
+        public void printMessage(string message)
         {
-            Console.WriteLine("Message received: "+ this.nodeId + ", " + this.actualSeq);
+            if(!String.IsNullOrEmpty(message)) Console.WriteLine(message+": " + this.nodeId + ", " + this.actualSeq);
+            else  Console.WriteLine("Message received: "+ this.nodeId + ", " + this.actualSeq);
         }
 
         public override bool Equals(Object obj)

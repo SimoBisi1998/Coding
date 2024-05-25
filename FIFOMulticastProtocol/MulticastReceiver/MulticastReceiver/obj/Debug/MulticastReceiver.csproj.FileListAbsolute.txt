@@ -13,7 +13,6 @@ C:/Users/Admin/source/repos/MulticastReceiver/MulticastReceiver/obj/Debug/Multic
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/bin/Debug/MulticastReceiver.pdb
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/bin/Debug/Newtonsoft.Json.dll
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/bin/Debug/Newtonsoft.Json.xml
-/Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/obj/Debug/MulticastReceiver.csproj.AssemblyReference.cache
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/obj/Debug/MulticastReceiver.csproj.CoreCompileInputs.cache
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/obj/Debug/MulticastReceiver.csproj.CopyComplete
 /Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/obj/Debug/MulticastReceiver.exe

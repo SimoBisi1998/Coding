@@ -48,7 +48,7 @@ namespace MulticastSender
                 int generatedNumber = rd.Next(0, 5);
 
                 //generated casual sequence
-                int seqGenerated = rd.Next(0, 3);
+                int seqGenerated = rd.Next(0, 15);
 
                 string nodeId = "";
 
@@ -132,7 +132,7 @@ namespace MulticastSender
                         sender.Send(bytesToSend, bytesToSend.Length, endPoint);
 
 
-                        Console.WriteLine("Message sent: " + msg.ToString());
+                        msg.printMessage();
                     }
                     catch (Exception e)
                     {
@@ -140,7 +140,7 @@ namespace MulticastSender
                     }
 
                     //wait 1 seconds
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10);
                 }
                 
             }

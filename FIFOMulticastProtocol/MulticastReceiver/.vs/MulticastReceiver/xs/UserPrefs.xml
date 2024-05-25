@@ -1,37 +1,26 @@
 ﻿<Properties StartupConfiguration="{040D7DC5-0887-4796-B6DF-D011B1A4A61C}|Default">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.MulticastReceiver PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workbench ActiveDocument="MulticastReceiver/Program.cs">
     <Files>
-      <File FileName="MulticastReceiver/Program.cs" Line="84" Column="77" />
+      <File FileName="MulticastReceiver/Program.cs" Line="68" Column="47" />
+      <File FileName="MulticastReceiver/Message.cs" Line="23" Column="77" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MulticastReceiver" expanded="True">
-            <Node name="MulticastReceiver" expanded="True" />
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State name="__root__">
-          <Node name="MulticastReceiver" expanded="True" selected="True">
             <Node name="MulticastReceiver" expanded="True">
-              <Node name="MulticastReceiver" expanded="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.ItemProperties.MulticastReceiver PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/Program.cs" relfile="MulticastReceiver/Program.cs" line="58" column="1" />
-      <Breakpoint file="/Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/Program.cs" relfile="MulticastReceiver/Program.cs" line="63" column="1" />
-      <Breakpoint file="/Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/Program.cs" relfile="MulticastReceiver/Program.cs" line="69" column="1" />
-      <Breakpoint file="/Users/simobisi/Desktop/SistemiDistribuiti/MulticastReceiver/MulticastReceiver/Program.cs" relfile="MulticastReceiver/Program.cs" line="73" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

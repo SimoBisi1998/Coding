@@ -1,8 +1,11 @@
 ﻿<Properties StartupConfiguration="{A94FCAE6-5D69-47C2-8FBD-29249B51F1E9}|Default">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="MulticastSender/Program.cs">
     <Files>
-      <File FileName="MulticastSender/Program.cs" Line="143" Column="1" />
-      <File FileName="MulticastSender/Node.cs" />
+      <File FileName="MulticastSender/Node.cs" Line="11" Column="41" IsPinned="True" />
+      <File FileName="MulticastSender/Program.cs" Line="143" Column="1" IsPinned="True" />
+      <File FileName="MulticastSender/Message.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,11 +19,9 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.MulticastSender PreferredExecutionTarget="MonoDevelop.Default" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
