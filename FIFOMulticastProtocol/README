@@ -1,14 +1,7 @@
 #FIFO MULTICAST PROTOCOL SIMULATION
 
 Its a personal simulation of a revisited FIFO Multicast protocol in .NET 4.7
-
 This protocol can retrieve datas from multiple senders in the proper order.
-This image below represents the sw architecture of the code.
-
-
-
-![Optional Text](https://github.com/SimoBisi1998/Coding/blob/master/FIFOMulticastProtocol/MulticastSender/Architecture.png?raw=true)
-
 
 #HOW TO RUN IT
 
