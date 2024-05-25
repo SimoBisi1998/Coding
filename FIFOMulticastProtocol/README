@@ -1,0 +1,20 @@
+#FIFO MULTICAST PROTOCOL SIMULATION
+
+Its a personal simulation of a revisited FIFO Multicast protocol in .NET 4.7
+
+This protocol can retrieve datas from multiple senders in the proper order.
+This image below represents the sw architecture of the code.
+
+
+
+![Screenshot](Coding/FIFOMulticastProtocol/Architecture.png)
+
+
+#HOW TO RUN IT
+
+You can run it using the sender/receiver.sh in the respective folders. 
+
+#HOW IT WORKS
+
+We have two instances of UDP client (sender and receiver) who the first one can send messages for each node in the network, in this particular case I set 4 nodes A,B,C,D.
+The receiver in this case can retrieve all the messages from the network and order them using a buffer list where to keep future messages to send to the application.
