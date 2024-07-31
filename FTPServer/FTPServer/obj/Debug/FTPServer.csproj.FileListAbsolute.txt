@@ -1,0 +1,8 @@
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\bin\Debug\FTPServer.exe.config
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\bin\Debug\FTPServer.exe
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\bin\Debug\FTPServer.pdb
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\obj\Debug\FTPServer.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\obj\Debug\FTPServer.exe
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\obj\Debug\FTPServer.pdb
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\obj\Debug\FTPServer.csprojAssemblyReference.cache
+C:\Users\Admin\Desktop\ExampleCodes\FTPServer\FTPServer\obj\Debug\FTPServer.csproj.CopyComplete
