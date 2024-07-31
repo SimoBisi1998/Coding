@@ -1,10 +1,10 @@
-FTP Server
+#FTP Server
 
-Language
+#Language
 I developed it in ASP.NET using framework 4.7
 
-Support mode
+#Support mode
 It supports both active and passive mode from a client ftp
 
-Architecture
+#Architecture
 ![alt text](FTPServer.drawio.png)
