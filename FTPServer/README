@@ -1,0 +1,10 @@
+FTP Server
+
+Language
+I developed it in ASP.NET using framework 4.7
+
+Support mode
+It supports both active and passive mode from a client ftp
+
+Architecture
+![Software architecture](./FTPServer.drawio.png)
