@@ -7,4 +7,4 @@ Support mode
 It supports both active and passive mode from a client ftp
 
 Architecture
-![Software architecture](https://github.com/SimoBisi1998/Coding/blob/master/FTPServer/FTPServer.drawio.png?raw=true)
+![Software architecture](https://github.com/SimoBisi1998/Coding/blob/fdc94999ffdb820021b46c49a817a84ccb5407eb/FTPServer/FTPServer.drawio.png)
